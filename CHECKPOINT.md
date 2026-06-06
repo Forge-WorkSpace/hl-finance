@@ -1,5 +1,5 @@
 # CHECKPOINT — HL Internal Finance App
-Last updated: 2026-06-06 (end of session)
+Last updated: 2026-06-06 (Phase 3 complete)
 
 ## STATUS PHASE
 
@@ -8,8 +8,8 @@ Last updated: 2026-06-06 (end of session)
 | Phase 0 — Setup & Init | ✅ Done | Infrastructure selesai |
 | Phase 1 — Auth | ✅ Done | Login, logout, session protection |
 | Phase 2 — Customer CRUD | ✅ Done | CRUD + diskon bertingkat + app shell |
-| Phase 3 — Product CRUD | 🔄 Active | Mulai sesi berikutnya |
-| Phase 4 — Transaksi (Bon) + Kalkulasi | ⬜ Queue | |
+| Phase 3 — Product CRUD | ✅ Done | List, create/edit, soft delete, LM/BR filter |
+| Phase 4 — Transaksi (Bon) + Kalkulasi | 🔄 Active | Mulai sesi berikutnya |
 | Phase 5 — Settlement (Lunas/Piutang) | ⬜ Queue | |
 | Phase 6 — Bonus Logic | ⬜ Queue | |
 | Phase 7 — Customer Detail Page | 🔄 Partial | Detail ringkas sudah ada di Phase 2 |
@@ -18,8 +18,8 @@ Last updated: 2026-06-06 (end of session)
 | Phase 10 — Final Deploy + README | ⬜ Queue | |
 
 ## PHASE AKTIF SEKARANG
-Phase: **3 — Product CRUD**
-Task aktif: Product list + create/edit + soft delete (LM/BR, harga_modal, harga_base)
+Phase: **4 — Transaksi (Bon) + Kalkulasi**
+Task aktif: Bon form, kalkulasi diskon bertingkat, piutang/lunas
 
 ## SCREENS DONE
 
@@ -31,7 +31,8 @@ Task aktif: Product list + create/edit + soft delete (LM/BR, harga_modal, harga_
 | Customer new/edit | `/customers/new`, `[id]/edit` | ✅ Done |
 | Customer detail | `/customers/[id]` | ✅ Done (ringkas) |
 | App shell (Sidebar/TopBar) | dashboard layout | ✅ Done |
-| Produk | `/products` | ⬜ Phase 3 |
+| Produk list | `/products` | ✅ Done |
+| Produk new/edit | `/products/new`, `[id]/edit` | ✅ Done |
 | Transaksi | `/transactions` | ⬜ Phase 4 |
 | Laporan | `/reports` | ⬜ Phase 8 |
 
@@ -43,23 +44,24 @@ Task aktif: Product list + create/edit + soft delete (LM/BR, harga_modal, harga_
 
 ## GIT / REMOTE
 - Repo: `https://github.com/Forge-WorkSpace/hl-finance`
-- Branch: `feature/mobile-integration` ✅ pushed
+- Branch: `feature/mobile-integration`
 - Auth: GitHub browser login (Credential Manager)
 
-## TODO NEXT (Phase 3)
-1. `app/(dashboard)/products/page.tsx` — list produk LM/BR
-2. `app/(dashboard)/products/new` + `[id]/edit` — form harga modal/base
-3. Server actions: create, update, soft delete product
-4. Referensi UI: `ui-reference/page-products.jsx`
+## TODO NEXT (Phase 4)
+1. `app/(dashboard)/transactions/page.tsx` — list transaksi Bon
+2. Form bon baru + kalkulasi diskon bertingkat per customer/product
+3. Server actions: create transaction, settlement
+4. Referensi UI: `ui-reference/page-transactions.jsx`
 
 ## KNOWN ISSUES
-- Sidebar links `/products`, `/transactions`, `/reports` → 404 (expected, belum Phase 3+)
+- Sidebar links `/transactions`, `/reports` → 404 (expected, belum Phase 4+)
 - TopBar search global belum wired (placeholder UI only)
 - Dashboard page masih placeholder
 
 ## COMMIT HISTORY (terakhir)
 
 ```
+feat(products): product CRUD, soft delete, LM/BR type filter
 66489ef docs: update end of session
 433ed42 feat(customers): customer CRUD, cascading discount editor, app shell
 12b6bef feat(auth): login page, server action, session protection, logout
@@ -67,5 +69,5 @@ ceafab7 feat(setup): init infrastructure, supabase client, auth middleware, desi
 ```
 
 ## LAST COMMIT
-- `15f7684` — docs: end of session update, schema grants, supabase fix
-- Push: ✅ `origin/feature/mobile-integration`
+- `feat(products): product CRUD, soft delete, LM/BR type filter` — Phase 3 complete
+- Push: pending
