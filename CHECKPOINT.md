@@ -67,4 +67,5 @@ ceafab7 feat(setup): init infrastructure, supabase client, auth middleware, desi
 ```
 
 ## LAST COMMIT
-- (pending) docs + schema grants + end of session push
+- `15f7684` — docs: end of session update, schema grants, supabase fix
+- Push: ✅ `origin/feature/mobile-integration`
