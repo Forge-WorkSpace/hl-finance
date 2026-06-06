@@ -6,8 +6,8 @@ Last updated: 2026-06-06
 | Phase | Status | Catatan |
 |-------|--------|---------|
 | Phase 0 — Setup & Init | ✅ Done | Infrastructure selesai |
-| Phase 1 — Auth | 🔄 Active | Login page + seed user |
-| Phase 2 — Customer CRUD | ⬜ Queue | |
+| Phase 1 — Auth | ✅ Done | Login, logout, session protection |
+| Phase 2 — Customer CRUD | 🔄 Active | |
 | Phase 3 — Product CRUD | ⬜ Queue | |
 | Phase 4 — Transaksi (Bon) + Kalkulasi | ⬜ Queue | |
 | Phase 5 — Settlement (Lunas/Piutang) | ⬜ Queue | |
@@ -18,52 +18,40 @@ Last updated: 2026-06-06
 | Phase 10 — Final Deploy + README | ⬜ Queue | |
 
 ## PHASE AKTIF SEKARANG
-Phase: 1 — Auth
-Task aktif: Build login page + Supabase Auth seed user
+Phase: 2 — Customer CRUD
+Task aktif: CRUD pelanggan + diskon LM/BR
 
-## INFRASTRUCTURE (Phase 0 ✅)
-
-### Dependencies
-- @supabase/supabase-js, @supabase/ssr
-- lucide-react, @fontsource/dm-sans, @fontsource/dm-mono
-- shadcn/ui (base-nova, CSS variables)
+## AUTH (Phase 1 ✅)
 
 ### Supabase
-- URL: `https://your-project.supabase.co` (placeholder — ganti di `.env.local` dengan URL project asli)
-- Anon key: placeholder di `.env.local` — isi dari Supabase dashboard
-- Schema: sudah dijalankan (schema.sql)
+- URL: `https://vgwgfnsmcmlrbbumdoey.supabase.co`
+- Anon key: configured di `.env.local`
 
-### Files created
-- `lib/supabase/client.ts`, `server.ts`, `middleware.ts`
-- `middleware.ts` — auth guard (/login public, sisanya protected)
-- `lib/calculations.ts` — applyCascade, formatIDR, effectivePct, stepsLabel
-- `types/index.ts` — Customer, Product, Transaction, dll
-- `app/(dashboard)/layout.tsx` — protected layout + sidebar/topbar placeholder
-- `app/(auth)/login/page.tsx` — placeholder
-- Design tokens dari `ui-reference/styles.css` → `app/globals.css`
+### Demo user (buat manual di Supabase Dashboard)
+- Email: `admin@hl-finance.com`
+- Password: `HLFinance2026!`
+
+### Files
+- `app/(auth)/login/page.tsx` + `login-form.tsx` — UI login
+- `app/(auth)/login/actions.ts` — signInWithPassword + getUser()
+- `app/(auth)/logout/route.ts` — POST signOut → /login
+- `app/(dashboard)/layout.tsx` — protected via getUser()
 
 ### Verified
 - `npm run build` → 0 errors
-- `npm run dev` → jalan
-- `/` → redirect `/login`
-- `/dashboard` tanpa auth → redirect `/login`
-- `applyCascade(100, [20,20,10])` === 57.6 ✅
+- Login UI sesuai spec (card, toggle password, loading, error banner)
+- Middleware: /login saat auth → /dashboard, /dashboard tanpa auth → /login
 
-## UI REFERENCE STATUS
-✅ Claude Design prototype selesai — semua halaman ada
-✅ File tersimpan di `ui-reference/`
-⚠️ VANILLA REACT — convert ke Next.js, BUKAN copy-paste
-
-## NEXT TASK (Phase 1)
-1. Isi `.env.local` dengan Supabase URL + anon key asli
-2. Seed 1 user di Supabase Auth
-3. Build halaman login (convert dari ui-reference/page-login.jsx)
-4. Login action + redirect ke /dashboard
+## NEXT TASK (Phase 2)
+1. Customer list page
+2. Create / edit customer
+3. Diskon LM & BR per customer (discount_steps jsonb)
+4. Soft-delete support
 
 ## TARGET TIMELINE
 ```
-06 Jun → Setup + Init ✅
-07-08 Jun → Auth + Customer + Product CRUD
+06 Jun → Setup + Init ✅ | Auth ✅
+07-08 Jun → Customer + Product CRUD
 09-10 Jun → Transaksi (Bon) + Kalkulasi
 11-12 Jun → Settlement + Bonus Logic
 13-14 Jun → Customer Detail Page
@@ -74,7 +62,7 @@ Task aktif: Build login page + Supabase Auth seed user
 ```
 
 ## KNOWN ISSUES
-- `.env.local` masih placeholder — middleware auth butuh URL + anon key valid untuk login nyata
+- Demo user harus di-seed manual di Supabase Auth dashboard (lihat README)
 
 ## LAST COMMIT
-- feat(setup): init infrastructure, supabase client, auth middleware, design tokens
+- feat(auth): login page, server action, session protection, logout
