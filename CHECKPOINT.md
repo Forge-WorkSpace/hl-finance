@@ -7,8 +7,8 @@ Last updated: 2026-06-06
 |-------|--------|---------|
 | Phase 0 — Setup & Init | ✅ Done | Infrastructure selesai |
 | Phase 1 — Auth | ✅ Done | Login, logout, session protection |
-| Phase 2 — Customer CRUD | 🔄 Active | |
-| Phase 3 — Product CRUD | ⬜ Queue | |
+| Phase 2 — Customer CRUD | ✅ Done | CRUD + diskon bertingkat + app shell |
+| Phase 3 — Product CRUD | 🔄 Active | |
 | Phase 4 — Transaksi (Bon) + Kalkulasi | ⬜ Queue | |
 | Phase 5 — Settlement (Lunas/Piutang) | ⬜ Queue | |
 | Phase 6 — Bonus Logic | ⬜ Queue | |
@@ -18,51 +18,38 @@ Last updated: 2026-06-06
 | Phase 10 — Final Deploy + README | ⬜ Queue | |
 
 ## PHASE AKTIF SEKARANG
-Phase: 2 — Customer CRUD
-Task aktif: CRUD pelanggan + diskon LM/BR
+Phase: 3 — Product CRUD
+Task aktif: CRUD produk LM/BR + harga modal/base
 
-## AUTH (Phase 1 ✅)
+## CUSTOMERS (Phase 2 ✅)
 
-### Supabase
-- URL: `https://vgwgfnsmcmlrbbumdoey.supabase.co`
-- Anon key: configured di `.env.local`
+### App Shell
+- `components/shared/Sidebar.tsx` — nav + logout POST `/api/auth/logout`
+- `components/shared/TopBar.tsx` — search, actions, avatar
+- `app/(dashboard)/layout.tsx` — sidebar + topbar + protected layout
 
-### Demo user (buat manual di Supabase Dashboard)
-- Email: `admin@hl-finance.com`
-- Password: `HLFinance2026!`
-
-### Files
-- `app/(auth)/login/page.tsx` + `login-form.tsx` — UI login
-- `app/(auth)/login/actions.ts` — signInWithPassword + getUser()
-- `app/(auth)/logout/route.ts` — POST signOut → /login
-- `app/(dashboard)/layout.tsx` — protected via getUser()
+### Customer CRUD
+- `app/(dashboard)/customers/page.tsx` — list + stats
+- `components/customers/CustomerTable.tsx` — filter, search, actions
+- `components/customers/CustomerForm.tsx` — create/edit + discount editor
+- `app/(dashboard)/customers/actions.ts` — create, update, soft delete
+- `app/(dashboard)/customers/[id]/page.tsx` — detail ringkas
+- `lib/customers/queries.ts` — Supabase queries + piutang aggregation
 
 ### Verified
 - `npm run build` → 0 errors
-- Login UI sesuai spec (card, toggle password, loading, error banner)
-- Middleware: /login saat auth → /dashboard, /dashboard tanpa auth → /login
+- Soft delete via `deleted_at`
+- Diskon preview: 100.000 × [20,20,10] → Rp 57.600
+- formatIDR / stepsLabel / applyCascade dari lib/calculations.ts
 
-## NEXT TASK (Phase 2)
-1. Customer list page
-2. Create / edit customer
-3. Diskon LM & BR per customer (discount_steps jsonb)
-4. Soft-delete support
+## SUPABASE
+- URL: `https://vgwgfnsmcmlrbbumdoey.supabase.co`
+- Demo user: `admin@hl-finance.com`
 
-## TARGET TIMELINE
-```
-06 Jun → Setup + Init ✅ | Auth ✅
-07-08 Jun → Customer + Product CRUD
-09-10 Jun → Transaksi (Bon) + Kalkulasi
-11-12 Jun → Settlement + Bonus Logic
-13-14 Jun → Customer Detail Page
-15-16 Jun → Recap + PDF Export
-17-18 Jun → Polish UI + Bug Fix
-19 Jun → Final deploy + README
-20 Jun → SUBMIT sebelum 23:59 WIB
-```
-
-## KNOWN ISSUES
-- Demo user harus di-seed manual di Supabase Auth dashboard (lihat README)
+## NEXT TASK (Phase 3)
+1. Product list page
+2. Create / edit product (nama, tipe LM|BR, harga_modal, harga_base)
+3. Soft-delete products
 
 ## LAST COMMIT
-- feat(auth): login page, server action, session protection, logout
+- feat(customers): customer CRUD, cascading discount editor, app shell
