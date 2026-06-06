@@ -102,3 +102,16 @@ CREATE TABLE bonus_grants (
 ALTER TABLE bonus_grants ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "auth users only" ON bonus_grants
   FOR ALL USING (auth.role() = 'authenticated');
+
+-- ============================================
+-- 7. GRANTS — wajib untuk Supabase API (role authenticated)
+-- Tanpa ini: error 42501 "permission denied for table ..."
+-- ============================================
+GRANT USAGE ON SCHEMA public TO authenticated;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON customers TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON customer_discounts TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON products TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON transactions TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON transaction_lines TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON bonus_grants TO authenticated;

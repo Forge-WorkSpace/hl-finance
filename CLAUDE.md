@@ -207,8 +207,9 @@ bonus_grants
 
 - Supabase project: `https://vgwgfnsmcmlrbbumdoey.supabase.co`
 - Demo user seeded: `admin@hl-finance.com` / `HLFinance2026!`
-- **Bug fixed:** error `42501 permission denied` — role `authenticated` butuh GRANT tabel. Fix: jalankan `supabase/fix-grants.sql` (juga ditambah di `schema.sql` §7)
+- **Bug fixed:** error `42501 permission denied` — role `authenticated` butuh GRANT tabel. Fix: `supabase/fix-grants.sql` + `schema.sql` §7
 - App shell: Sidebar + TopBar live di semua dashboard routes
 - UI reference files ada di `ui-reference/` (bukan root) — tetap VANILLA REACT, convert only
 - Stack aktual: Next.js **16.2.7** + Tailwind v4 + shadcn/ui (bukan Next 14 — update mental model)
-- Git branch kerja: `feature/mobile-integration`
+- Git remote: `https://github.com/Forge-WorkSpace/hl-finance.git`
+- Git branch: `feature/mobile-integration` — ✅ pushed ke GitHub

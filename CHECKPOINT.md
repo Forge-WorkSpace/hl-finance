@@ -23,20 +23,28 @@ Task aktif: Product list + create/edit + soft delete (LM/BR, harga_modal, harga_
 
 ## SCREENS DONE
 
-| Screen | Route | Commit era |
-|--------|-------|------------|
-| Login | `/login` | `12b6bef` |
-| Dashboard shell | `/dashboard` | placeholder `433ed42` |
-| Customer list | `/customers` | `433ed42` |
-| Customer new/edit | `/customers/new`, `[id]/edit` | `433ed42` |
-| Customer detail | `/customers/[id]` | `433ed42` |
-| App shell (Sidebar/TopBar) | dashboard layout | `433ed42` |
+| Screen | Route | Status |
+|--------|-------|--------|
+| Login | `/login` | ✅ Done |
+| Dashboard shell | `/dashboard` | 🔄 Placeholder |
+| Customer list | `/customers` | ✅ Done |
+| Customer new/edit | `/customers/new`, `[id]/edit` | ✅ Done |
+| Customer detail | `/customers/[id]` | ✅ Done (ringkas) |
+| App shell (Sidebar/TopBar) | dashboard layout | ✅ Done |
+| Produk | `/products` | ⬜ Phase 3 |
+| Transaksi | `/transactions` | ⬜ Phase 4 |
+| Laporan | `/reports` | ⬜ Phase 8 |
 
 ## SUPABASE
 - URL: `https://vgwgfnsmcmlrbbumdoey.supabase.co`
 - Demo user: `admin@hl-finance.com` / `HLFinance2026!`
 - Schema + RLS: `schema.sql` (termasuk GRANT §7)
-- Fix GRANT standalone: `supabase/fix-grants.sql` ✅ sudah dijalankan
+- Fix GRANT: `supabase/fix-grants.sql` ✅ dijalankan di project
+
+## GIT / REMOTE
+- Repo: `https://github.com/Forge-WorkSpace/hl-finance`
+- Branch: `feature/mobile-integration` ✅ pushed
+- Auth: GitHub browser login (Credential Manager)
 
 ## TODO NEXT (Phase 3)
 1. `app/(dashboard)/products/page.tsx` — list produk LM/BR
@@ -46,18 +54,17 @@ Task aktif: Product list + create/edit + soft delete (LM/BR, harga_modal, harga_
 
 ## KNOWN ISSUES
 - Sidebar links `/products`, `/transactions`, `/reports` → 404 (expected, belum Phase 3+)
-- `supabase/fix-grants.sql` + `schema.sql` grants belum di-commit (untracked `supabase/`, modified `schema.sql`)
-- Remote git belum dikonfigurasi — push `feature/mobile-integration` perlu remote origin
 - TopBar search global belum wired (placeholder UI only)
+- Dashboard page masih placeholder
 
 ## COMMIT HISTORY (terakhir)
 
 ```
+66489ef docs: update end of session
 433ed42 feat(customers): customer CRUD, cascading discount editor, app shell
 12b6bef feat(auth): login page, server action, session protection, logout
 ceafab7 feat(setup): init infrastructure, supabase client, auth middleware, design tokens
 ```
 
 ## LAST COMMIT
-- `686e185` — docs: update end of session
-- Push: ❌ belum — remote `origin` belum dikonfigurasi
+- (pending) docs + schema grants + end of session push

@@ -88,6 +88,12 @@
 **Alasan:** Lebih akurat, tidak ada risiko data out of sync. Data transaksi sudah ada, tinggal di-sum.
 **Konsekuensi:** Query bonus accumulator = SUM(line_omzet) dari transactions Lunas per customer. Performa acceptable untuk single-user app.
 
+### 2026-06-06 — Status Transaksi: Hanya Piutang & Lunas
+**Konteks:** Stitch generate badge "Jatuh Tempo" tapi tidak ada di AC
+**Yang dipilih:** Hapus — hanya dua status: `piutang` dan `lunas`
+**Alasan:** Tidak ada di AC, tidak ada definisi logikanya, scope creep
+**Konsekuensi:** Jangan tambah status apapun selain piutang/lunas di seluruh codebase
+
 ### 2026-06-06 — UX Standards (Permintaan Client)
 **Konteks:** Client minta app harus user-friendly, bukan sekadar fungsional
 **Yang dipilih:** Wajib implement semua standar UX berikut di setiap halaman
@@ -100,6 +106,24 @@
 - Status selalu visible via color-coded badge (Amber=Piutang, Green=Lunas)
 - Aksi umum bisa dilakukan dalam 1 klik
 - Responsive — jalan di mobile dan desktop
+
+### 2026-06-06 — Status Transaksi: Hanya Piutang & Lunas
+**Konteks:** Stitch generate badge "Jatuh Tempo" tapi tidak ada di AC
+**Yang dipilih:** Hapus — hanya dua status: `piutang` dan `lunas`
+**Alasan:** Tidak ada di AC, tidak ada definisi logikanya, scope creep
+**Konsekuensi:** Jangan tambah status apapun selain piutang/lunas di seluruh codebase
+
+### 2026-06-06 — App Shell: Sidebar + TopBar
+**Konteks:** Semua halaman butuh layout yang konsisten
+**Yang dipilih:** Sidebar fixed 240px dark (#0F172A) + TopBar 64px white
+**Alasan:** Sesuai design system, konversi dari ui-reference/shell.jsx
+**Konsekuensi:** Semua halaman dashboard wrapnya di app/(dashboard)/layout.tsx
+
+### 2026-06-06 — Customer Discount Storage
+**Konteks:** Diskon bertingkat per pelanggan per tipe (LM/BR)
+**Yang dipilih:** Simpan di tabel customer_discounts sebagai JSONB array discount_steps
+**Alasan:** Flexible, mudah di-query, sesuai schema yang sudah dibuat
+**Konsekuensi:** Satu row per customer per tipe (max 2 row per customer)
 
 ### 2026-06-06 — PDF Export Library
 **Konteks:** AC-6.4 dan AC-7.8 butuh download PDF
