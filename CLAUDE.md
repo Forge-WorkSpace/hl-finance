@@ -171,12 +171,14 @@ bonus_grants
 
 ## CURRENT PHASE
 
-**Phase 8 — Deploy + Polish** ✅ **SELESAI**
+**Phase 8 — Deploy + Polish** ✅ **SELESAI (kode)** | **Vercel deploy** 🔄 in progress
 
 | Phase | Status |
 |-------|--------|
-| 0–8 | ✅ Done |
-| 9–10 | Optional / covered in Phase 8 |
+| 0–7 | ✅ Done |
+| 8 Deploy + Polish | ✅ Done (redirect, toast, README, main pushed) |
+| Vercel production | 🔄 User configuring New Project — env vars pending |
+| 9–10 | Optional (TopBar search, post-deploy QA) |
 
 ## SCREEN STATUS
 
@@ -191,20 +193,17 @@ bonus_grants
 | Transaksi | `/transactions` | ✅ Done — list, bon form, detail, settlement |
 | Laporan | `/reports` | ✅ Done — 3 tabs, filter bulan/tahun, PDF export |
 
-## SESSION NOTES (2026-06-06)
+## SESSION NOTES (2026-06-07 — end of session)
 
-- Supabase project: `https://vgwgfnsmcmlrbbumdoey.supabase.co`
-- Demo user: `admin@hl-finance.com` / `HLFinance2026!`
-- Stack: Next.js **16.2.7** + Tailwind v4 + shadcn/ui + Supabase
-- Git: `https://github.com/Forge-WorkSpace/hl-finance` — branch `feature/mobile-integration`
-- GRANT fix: `supabase/fix-grants.sql` (role `authenticated` butuh GRANT tabel)
-- UI reference di `ui-reference/` — VANILLA REACT, convert only (jangan copy-paste)
-- Laporan & dashboard: exclude `is_bonus=true` dari semua agregasi omzet/laba/piutang
-- Klaim bonus: `/transactions/new?customerId=[id]&bonus=true` → insert `bonus_grants`
-- Settlement: `settlement-actions.ts` — single bon + monthly mass settle (exclude bonus bon)
-- PDF: `@react-pdf/renderer` — `ReportPDFDocument`, `CustomerPDFDocument`
-- UX: **sonner** toasts via `?toast=` query param setelah redirect server actions
-- Redirect map: create tx → `/transactions`, bonus bon → `/customers/[id]`, settle → detail/customer
+- Supabase: `https://vgwgfnsmcmlrbbumdoey.supabase.co` | demo `admin@hl-finance.com` / `HLFinance2026!`
+- Stack: Next.js **16.2.7** + Tailwind v4 + shadcn/ui + Supabase + sonner + react-pdf
+- Git repo: `https://github.com/Forge-WorkSpace/hl-finance`
+  - `feature/mobile-integration` — dev (latest docs + Phase 8 polish)
+  - `main` @ `56b8e95` — production branch, pushed to GitHub
+- Phase 8 selesai: redirect-after-action (`redirectWithToast`), sonner toasts, README, `npm run build` 0 errors
+- **Vercel:** New Project `hl-finance` dari repo `main` — user di halaman env vars; isi `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` lalu Deploy
+- Setelah deploy: update LIVE URL di README + CHECKPOINT, jalankan post-deploy QA (login, CRUD, PDF)
+- Jangan sentuh `KDMP_DECISIONS.md` (Alex only) — pakai `DECISIONS.md` untuk keputusan project ini
 
 ## DOCS SYNC
 

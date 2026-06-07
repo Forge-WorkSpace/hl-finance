@@ -1,5 +1,5 @@
 # CHECKPOINT — HL Internal Finance App
-Last updated: 2026-06-06 (Phase 8 complete)
+Last updated: 2026-06-07 (end of session)
 
 ## STATUS PHASE
 
@@ -13,51 +13,58 @@ Last updated: 2026-06-06 (Phase 8 complete)
 | Phase 5 — Settlement (Lunas/Piutang) | ✅ Done | LunasModal, settle single/monthly, customer detail |
 | Phase 6 — Bonus Logic | ✅ Done | Klaim bonus flow, bonus_grants, validation |
 | Phase 7 — Dashboard + Laporan + PDF | ✅ Done | Dashboard real data, recap 3 tabs, react-pdf export |
-| Phase 8 — Deploy + Polish | ✅ Done | Redirect after action, sonner toasts, README |
-| Phase 9 — Polish UI + Bug Fix | ⬜ Optional | TopBar search masih placeholder |
-| Phase 10 — Final Deploy + README | ✅ Done | Merged ke main, siap Vercel deploy |
+| Phase 8 — Deploy + Polish | ✅ Done | Redirect, sonner, README, main pushed |
+| Vercel Production | 🔄 In progress | New Project configured — env vars + Deploy pending |
+| Phase 9 — Optional polish | ⬜ Queue | TopBar search |
 
 ## PHASE AKTIF SEKARANG
-**Project selesai** — siap deploy Vercel & submission bounty
+**Vercel deploy** — isi env vars → Deploy → catat live URL → post-deploy QA
 
 ## LIVE URL
-- Vercel: _(deploy via Vercel dashboard — set env vars Supabase)_
+- Vercel: _(pending — user on New Project screen, belum klik Deploy)_
 - Repo: https://github.com/Forge-WorkSpace/hl-finance
 
 ## SCREENS DONE
 
-Semua screen ✅ — lihat CLAUDE.md
+| Screen | Route | Status |
+|--------|-------|--------|
+| Login | `/login` | ✅ Done |
+| Dashboard | `/dashboard` | ✅ Done |
+| Customer list / new / edit / detail | `/customers/*` | ✅ Done |
+| Product list / new / edit | `/products/*` | ✅ Done |
+| Transaksi list / bon / detail | `/transactions/*` | ✅ Done |
+| Laporan | `/reports` | ✅ Done |
 
 ## SUPABASE
 - URL: `https://vgwgfnsmcmlrbbumdoey.supabase.co`
 - Demo user: `admin@hl-finance.com` / `HLFinance2026!`
-- Schema + RLS: `schema.sql` (termasuk GRANT §7)
-- Fix GRANT: `supabase/fix-grants.sql` ✅
+- Schema + RLS: `schema.sql` | Fix GRANT: `supabase/fix-grants.sql` ✅
 
 ## GIT / REMOTE
 - Repo: `https://github.com/Forge-WorkSpace/hl-finance`
-- Branch utama: `main` (production)
-- Branch dev: `feature/mobile-integration`
+- Branch dev: `feature/mobile-integration` (pushed)
+- Branch prod: `main` @ `56b8e95` (pushed, merged from feature)
 
-## PHASE 8 DELIVERABLES
-- ✅ Redirect after action (semua server actions)
-- ✅ Toast notifications (sonner + `?toast=` query param)
-- ✅ README profesional dengan setup & deploy guide
-- ✅ Empty states + loading states (existing forms)
+## TODO NEXT
+1. Vercel: set `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` → **Deploy**
+2. Copy live URL → update README.md + CHECKPOINT.md
+3. Post-deploy QA: login, tambah pelanggan, buat bon, tandai lunas, download PDF, mobile check
+4. (Optional) Wire TopBar global search
 
 ## KNOWN ISSUES
-- TopBar search global belum wired (placeholder UI only)
-- Live URL: deploy manual di Vercel (butuh env vars)
+- Live URL belum ada — Vercel deploy belum selesai
+- TopBar search global masih placeholder UI only
+- Supabase Auth: pastikan redirect URL Vercel ditambahkan di Supabase dashboard setelah deploy
 
 ## COMMIT HISTORY (terakhir)
 
 ```
-chore: polish UX, redirect after action, README, deploy prep
+40d61be docs: mark Phase 8 complete in CLAUDE.md
+0285d33 chore: polish UX, redirect after action, README, deploy prep
 3ff988b feat(reports): dashboard real data, recap laporan, PDF export
 3f74852 feat(bonus): bonus claim flow, bonus grants, bonus validation
 afeea76 feat(settlement): lunas modal, settle single bon, settle monthly, customer detail
-0b44437 docs: sync CHECKPOINT and CLAUDE.md through Phase 7
 ```
 
 ## LAST COMMIT
-- `chore: polish UX, redirect after action, README, deploy prep` — Phase 8 complete
+- `40d61be` — `docs: mark Phase 8 complete in CLAUDE.md`
