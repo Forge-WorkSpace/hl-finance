@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { ChevronRight, Download, Gift, Pencil, Plus } from "lucide-react";
+import { ChevronRight, Gift, Pencil, Plus } from "lucide-react";
 import { effectivePct, formatIDR } from "@/lib/calculations";
 import { CustomerAvatar } from "@/components/shared/CustomerAvatar";
 import { DiscountChips } from "@/components/customers/DiscountChips";
 import { CustomerMonthlyHistory } from "@/components/customers/CustomerMonthlyHistory";
+import { CustomerDownloadButton } from "@/components/customers/CustomerDownloadButton";
+import { buildCustomerPdfData } from "@/lib/reports/customer-pdf";
 import type { CustomerDetail } from "@/lib/customers/types";
 import type { ProductType } from "@/types";
 
@@ -62,6 +64,7 @@ function TierBlock({
 }
 
 export function CustomerDetailView({ customer }: CustomerDetailViewProps) {
+  const pdfData = buildCustomerPdfData(customer);
   const createdDate = new Date(customer.created_at).toLocaleDateString("id-ID", {
     day: "numeric",
     month: "long",
@@ -99,14 +102,7 @@ export function CustomerDetailView({ customer }: CustomerDetailViewProps) {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              disabled
-              className="inline-flex h-10 items-center gap-2 rounded-md border border-[var(--border)] bg-white px-4 text-sm font-medium text-[var(--text-tertiary)] opacity-60"
-            >
-              <Download size={16} />
-              Download PDF
-            </button>
+            <CustomerDownloadButton data={pdfData} />
             <Link
               href={`/customers/${customer.id}/edit`}
               className="inline-flex h-10 items-center gap-2 rounded-md border border-[var(--border)] bg-white px-4 text-sm font-medium text-[var(--text-secondary)] hover:bg-[var(--surface-dim)]"

@@ -1,8 +1,12 @@
-export default function DashboardPage() {
+import { createClient } from "@/lib/supabase/server";
+import { getDashboardData } from "@/lib/reports/queries";
+import { DashboardView } from "@/components/dashboard/DashboardView";
+
+export default async function DashboardPage() {
+  const supabase = await createClient();
+  const { stats, recentTransactions } = await getDashboardData(supabase);
+
   return (
-    <div>
-      <h1 className="text-2xl font-semibold text-[var(--text-primary)]">Dashboard</h1>
-      <p className="mt-2 text-[var(--text-secondary)]">Coming soon</p>
-    </div>
+    <DashboardView stats={stats} recentTransactions={recentTransactions} />
   );
 }
