@@ -228,3 +228,31 @@ export async function getProductsByIds(
     tipe: row.tipe as BonFormProduct["tipe"],
   }));
 }
+
+export async function generateNextNomorBon(
+  supabase: SupabaseClient,
+): Promise<string> {
+  const year = new Date().getFullYear();
+  const prefix = `BON-${year}-`;
+
+  const { data, error } = await supabase
+    .from("transactions")
+    .select("nomor_bon")
+    .like("nomor_bon", `${prefix}%`)
+    .order("nomor_bon", { ascending: false })
+    .limit(100);
+
+  if (error) throw error;
+
+  let maxSeq = 0;
+  for (const row of data ?? []) {
+    const match = row.nomor_bon.match(
+      new RegExp(`^${prefix.replace(/-/g, "\\-")}(\\d+)$`),
+    );
+    if (match) {
+      maxSeq = Math.max(maxSeq, Number.parseInt(match[1], 10));
+    }
+  }
+
+  return `${prefix}${String(maxSeq + 1).padStart(4, "0")}`;
+}

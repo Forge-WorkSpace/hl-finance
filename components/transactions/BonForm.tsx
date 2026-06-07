@@ -11,6 +11,7 @@ import {
   stepsLabel,
 } from "@/lib/calculations";
 import { ProductTypeBadge } from "@/components/products/ProductTypeBadge";
+import { CustomerCombobox } from "@/components/transactions/CustomerCombobox";
 import type { TransactionActionState } from "@/app/(dashboard)/transactions/actions";
 import type {
   BonFormCustomer,
@@ -29,6 +30,7 @@ interface BonFormProps {
   title?: string;
   customers: BonFormCustomer[];
   products: BonFormProduct[];
+  defaultNomorBon?: string;
   initialData?: TransactionDetail;
   transactionId?: string;
   action: (
@@ -50,17 +52,17 @@ export function BonForm({
   title = "Bon Baru",
   customers,
   products,
+  defaultNomorBon,
   initialData,
   action,
 }: BonFormProps) {
   const [state, formAction, isPending] = useActionState(action, { error: null });
-  const [nomorBon, setNomorBon] = useState(initialData?.nomor_bon ?? "");
+  const nomorBon = initialData?.nomor_bon ?? defaultNomorBon ?? "";
   const [tanggal, setTanggal] = useState(initialData?.tanggal ?? todayIsoDate());
   const [customerId, setCustomerId] = useState(initialData?.customer_id ?? "");
   const [deskripsi, setDeskripsi] = useState(initialData?.deskripsi ?? "");
   const [isBonus, setIsBonus] = useState(initialData?.is_bonus ?? false);
   const [ongkir, setOngkir] = useState(initialData?.ongkir ?? 0);
-  const [customerQuery, setCustomerQuery] = useState("");
   const [rows, setRows] = useState<LineRow[]>(() => {
     if (initialData?.lines.length) {
       return initialData.lines.map((line) => ({
@@ -113,11 +115,35 @@ export function BonForm({
     return calculateTransactionSummary(summaryLines, ongkir);
   }, [computedRows, ongkir]);
 
-  const filteredCustomers = useMemo(() => {
-    const q = customerQuery.trim().toLowerCase();
-    if (!q) return customers;
-    return customers.filter((item) => item.nama.toLowerCase().includes(q));
-  }, [customers, customerQuery]);
+  const hasValidLines = computedRows.some((row) => row.productId);
+  const canSubmit = Boolean(customerId) && hasValidLines;
+
+  const payloadJson = useMemo(
+    () =>
+      JSON.stringify({
+        nomor_bon: nomorBon,
+        tanggal,
+        customer_id: customerId,
+        deskripsi: deskripsi.trim() || null,
+        is_bonus: isBonus,
+        ongkir,
+        lines: computedRows
+          .filter((row) => row.productId)
+          .map((row) => ({
+            product_id: row.productId,
+            quantity: Math.max(1, row.qty),
+          })),
+      }),
+    [
+      nomorBon,
+      tanggal,
+      customerId,
+      deskripsi,
+      isBonus,
+      ongkir,
+      computedRows,
+    ],
+  );
 
   function setRow(uid: number, patch: Partial<LineRow>) {
     setRows((current) =>
@@ -153,22 +179,12 @@ export function BonForm({
                 {title}
               </h1>
               <div className="text-right">
-                <label
-                  htmlFor="nomor_bon"
-                  className="block text-[11px] font-semibold uppercase tracking-wider text-[var(--text-tertiary)]"
-                >
+                <span className="block text-[11px] font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
                   No. Bon
-                </label>
-                <input
-                  id="nomor_bon"
-                  type="text"
-                  required
-                  value={nomorBon}
-                  onChange={(e) => setNomorBon(e.target.value)}
-                  disabled={isPending}
-                  placeholder="BON-001"
-                  className="mono mt-1 h-10 w-44 rounded-md border border-[var(--border)] px-3 text-right text-sm font-medium text-[var(--primary)] outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 disabled:opacity-60"
-                />
+                </span>
+                <span className="mono mt-1 block text-[15px] font-medium text-[var(--primary)]">
+                  {nomorBon || "—"}
+                </span>
               </div>
             </div>
 
@@ -192,35 +208,17 @@ export function BonForm({
               </div>
               <div>
                 <label
-                  htmlFor="customer_search"
+                  htmlFor="customer_id"
                   className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--text-secondary)]"
                 >
                   Pelanggan
                 </label>
-                <input
-                  id="customer_search"
-                  type="search"
-                  value={customerQuery}
-                  onChange={(e) => setCustomerQuery(e.target.value)}
-                  placeholder="Cari pelanggan..."
-                  disabled={isPending}
-                  className="mb-2 h-10 w-full rounded-md border border-[var(--border)] px-3 text-sm outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 disabled:opacity-60"
-                />
-                <select
-                  id="customer_id"
-                  required
+                <CustomerCombobox
+                  customers={customers}
                   value={customerId}
-                  onChange={(e) => setCustomerId(e.target.value)}
+                  onChange={setCustomerId}
                   disabled={isPending}
-                  className="h-11 w-full rounded-md border border-[var(--border)] bg-white px-3 text-sm outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 disabled:opacity-60"
-                >
-                  <option value="">Pilih pelanggan...</option>
-                  {filteredCustomers.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.nama}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
 
@@ -446,34 +444,11 @@ export function BonForm({
               </div>
             ) : null}
 
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                const formData = new FormData();
-                formData.set(
-                  "payload",
-                  JSON.stringify({
-                    nomor_bon: nomorBon,
-                    tanggal,
-                    customer_id: customerId,
-                    deskripsi: deskripsi.trim() || null,
-                    is_bonus: isBonus,
-                    ongkir,
-                    lines: computedRows
-                      .filter((row) => row.productId)
-                      .map((row) => ({
-                        product_id: row.productId,
-                        quantity: Math.max(1, row.qty),
-                      })),
-                  }),
-                );
-                formAction(formData);
-              }}
-              className="mt-5 space-y-2"
-            >
+            <form action={formAction} className="mt-5 space-y-2">
+              <input type="hidden" name="payload" value={payloadJson} readOnly />
               <button
                 type="submit"
-                disabled={isPending}
+                disabled={isPending || !canSubmit}
                 className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-md bg-blue-600 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-70"
               >
                 {isPending ? (

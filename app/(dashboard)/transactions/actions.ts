@@ -173,6 +173,8 @@ export async function createTransaction(
     return { error: "Nomor bon sudah digunakan. Gunakan nomor lain." };
   }
 
+  let newTxId: string;
+
   try {
     const { inserts } = await buildLineRecords(supabase, parsed.payload);
 
@@ -220,13 +222,15 @@ export async function createTransaction(
       );
     }
 
-    revalidatePath("/transactions");
-    redirect(`/transactions/${tx.id}`);
+    newTxId = tx.id;
   } catch (err) {
     return {
       error: err instanceof Error ? err.message : "Gagal menyimpan transaksi.",
     };
   }
+
+  revalidatePath("/transactions");
+  redirect(`/transactions/${newTxId}`);
 }
 
 export async function updateTransaction(
@@ -297,15 +301,15 @@ export async function updateTransaction(
       parsed.payload.customer_id,
       parsed.payload.is_bonus,
     );
-
-    revalidatePath("/transactions");
-    revalidatePath(`/transactions/${transactionId}`);
-    redirect(`/transactions/${transactionId}`);
   } catch (err) {
     return {
       error: err instanceof Error ? err.message : "Gagal memperbarui transaksi.",
     };
   }
+
+  revalidatePath("/transactions");
+  revalidatePath(`/transactions/${transactionId}`);
+  redirect(`/transactions/${transactionId}`);
 }
 
 export async function deleteTransaction(transactionId: string): Promise<void> {
