@@ -14,14 +14,14 @@ Last updated: 2026-06-07 (end of session)
 | Phase 6 — Bonus Logic | ✅ Done | Klaim bonus flow, bonus_grants, validation |
 | Phase 7 — Dashboard + Laporan + PDF | ✅ Done | Dashboard real data, recap 3 tabs, react-pdf export |
 | Phase 8 — Deploy + Polish | ✅ Done | Redirect, sonner, README, main pushed |
-| Vercel Production | 🔄 In progress | New Project configured — env vars + Deploy pending |
+| Vercel Production | ✅ Done | https://hl-finance.vercel.app |
 | Phase 9 — Optional polish | ⬜ Queue | TopBar search |
 
 ## PHASE AKTIF SEKARANG
-**Vercel deploy** — isi env vars → Deploy → catat live URL → post-deploy QA
+**Post-deploy QA** — verifikasi login & flow utama di live URL
 
 ## LIVE URL
-- Vercel: _(pending — user on New Project screen, belum klik Deploy)_
+- **Production:** https://hl-finance.vercel.app ✅
 - Repo: https://github.com/Forge-WorkSpace/hl-finance
 
 ## SCREENS DONE
@@ -46,15 +46,14 @@ Last updated: 2026-06-07 (end of session)
 - Branch prod: `main` @ `56b8e95` (pushed, merged from feature)
 
 ## TODO NEXT
-1. Vercel: set `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` → **Deploy**
-2. Copy live URL → update README.md + CHECKPOINT.md
-3. Post-deploy QA: login, tambah pelanggan, buat bon, tandai lunas, download PDF, mobile check
-4. (Optional) Wire TopBar global search
+1. Post-deploy QA di https://hl-finance.vercel.app (login, CRUD, bon, lunas, PDF, mobile)
+2. Supabase Auth: tambahkan `https://hl-finance.vercel.app/**` di Redirect URLs jika login gagal
+3. (Optional) Wire TopBar global search
+4. Merge `feature/mobile-integration` docs commit ke `main` jika perlu
 
 ## KNOWN ISSUES
-- Live URL belum ada — Vercel deploy belum selesai
 - TopBar search global masih placeholder UI only
-- Supabase Auth: pastikan redirect URL Vercel ditambahkan di Supabase dashboard setelah deploy
+- Pastikan Supabase Redirect URLs include production domain jika auth error di live
 
 ## COMMIT HISTORY (terakhir)
 

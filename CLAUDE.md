@@ -171,13 +171,12 @@ bonus_grants
 
 ## CURRENT PHASE
 
-**Phase 8 — Deploy + Polish** ✅ **SELESAI (kode)** | **Vercel deploy** 🔄 in progress
+**Phase 8 — Deploy + Polish** ✅ **SELESAI** | **Live:** https://hl-finance.vercel.app
 
 | Phase | Status |
 |-------|--------|
-| 0–7 | ✅ Done |
-| 8 Deploy + Polish | ✅ Done (redirect, toast, README, main pushed) |
-| Vercel production | 🔄 User configuring New Project — env vars pending |
+| 0–8 | ✅ Done |
+| Vercel production | ✅ https://hl-finance.vercel.app |
 | 9–10 | Optional (TopBar search, post-deploy QA) |
 
 ## SCREEN STATUS
@@ -201,8 +200,8 @@ bonus_grants
   - `feature/mobile-integration` — dev (latest docs + Phase 8 polish)
   - `main` @ `56b8e95` — production branch, pushed to GitHub
 - Phase 8 selesai: redirect-after-action (`redirectWithToast`), sonner toasts, README, `npm run build` 0 errors
-- **Vercel:** New Project `hl-finance` dari repo `main` — user di halaman env vars; isi `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` lalu Deploy
-- Setelah deploy: update LIVE URL di README + CHECKPOINT, jalankan post-deploy QA (login, CRUD, PDF)
+- **Live:** https://hl-finance.vercel.app (Vercel Production, deploy 2026-06-07)
+- Setelah deploy: jalankan post-deploy QA; Supabase Redirect URLs jika login gagal
 - Jangan sentuh `KDMP_DECISIONS.md` (Alex only) — pakai `DECISIONS.md` untuk keputusan project ini
 
 ## DOCS SYNC
