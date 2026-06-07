@@ -47,6 +47,7 @@ Task aktif: Vercel deploy, README, final QA
 ## GIT / REMOTE
 - Repo: `https://github.com/Forge-WorkSpace/hl-finance`
 - Branch: `feature/mobile-integration`
+- Push: ✅ up to date (Phase 5–7 pushed)
 
 ## TODO NEXT (Phase 8)
 1. Deploy ke Vercel
@@ -59,10 +60,12 @@ Task aktif: Vercel deploy, README, final QA
 ## COMMIT HISTORY (terakhir)
 
 ```
-feat(reports): dashboard real data, recap laporan, PDF export
+3ff988b feat(reports): dashboard real data, recap laporan, PDF export
 3f74852 feat(bonus): bonus claim flow, bonus grants, bonus validation
 afeea76 feat(settlement): lunas modal, settle single bon, settle monthly, customer detail
+56b29fb fix(transactions): auto nomor bon, customer combobox, save redirect
+826a18e feat(transactions): bon form, real-time calculation, snapshot, detail page
 ```
 
 ## LAST COMMIT
-- `feat(reports): dashboard real data, recap laporan, PDF export` — Phase 7 complete
+- `3ff988b` — `feat(reports): dashboard real data, recap laporan, PDF export` — Phase 7 complete

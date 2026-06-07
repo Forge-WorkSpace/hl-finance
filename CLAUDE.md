@@ -7,40 +7,41 @@ Target  : Web app — akses via browser, deploy di Vercel
 Bounty  : Rp 1.400.000 — deadline 20 Juni 2026, 23:59 WIB
 
 ## TECH STACK
-Frontend  : Next.js 14 (App Router) + Tailwind CSS
-Backend   : Next.js API Routes / Server Actions
+Frontend  : Next.js 16 (App Router) + Tailwind CSS v4
+Backend   : Next.js Server Actions
 Database  : Supabase (PostgreSQL)
 Auth      : Supabase Auth — single user, no registration
-PDF       : react-pdf
+PDF       : @react-pdf/renderer
 Hosting   : Vercel
+UI        : shadcn/ui + Lucide icons
 
 ## STRUKTUR FOLDER
 ```
 hl-finance/
 ├── app/
-│   ├── (auth)/
-│   │   └── login/
+│   ├── (auth)/login/
 │   ├── (dashboard)/
-│   │   ├── dashboard/
+│   │   ├── dashboard/       ← ringkasan piutang, omzet, laba
 │   │   ├── customers/
 │   │   ├── products/
 │   │   ├── transactions/
-│   │   └── reports/
+│   │   └── reports/         ← recap 3 tabs + PDF export
 │   └── layout.tsx
 ├── components/
-│   ├── ui/           ← shadcn components
 │   ├── customers/
+│   ├── dashboard/
 │   ├── products/
-│   ├── transactions/
-│   └── reports/
+│   ├── reports/             ← RecapTable, PDFDocument
+│   ├── shared/              ← Sidebar, TopBar, LunasModal, dll
+│   └── transactions/
 ├── lib/
 │   ├── supabase/
-│   │   ├── client.ts
-│   │   ├── server.ts
-│   │   └── types.ts
-│   ├── calculations.ts   ← semua logika hitung (diskon, omzet, laba, bonus)
-│   └── utils.ts
-├── hooks/
+│   ├── calculations.ts      ← diskon, omzet, laba, bonus helpers
+│   ├── customers/           ← queries, detail-utils
+│   ├── transactions/        ← queries, types
+│   ├── reports/             ← aggregations, queries, types
+│   └── pdf/                 ← format helpers untuk react-pdf
+├── ui-reference/            ← VANILLA REACT prototype (referensi visual saja)
 └── types/
 ```
 
@@ -75,12 +76,14 @@ Omzet, Laba, dan Bonus accumulator **HANYA dihitung dari transaksi Lunas**.
 Transaksi Piutang = belum diakui di laporan.
 
 ## KEPUTUSAN ARSITEKTUR PENTING
-- App Router dipilih untuk Next.js 14 — Server Components + Server Actions
+- App Router — Server Components + Server Actions (Next.js 16)
 - Supabase Auth untuk single user — seed 1 user saat setup, no register flow
 - Semua kalkulasi diskon/omzet/laba dipusatkan di `lib/calculations.ts` — tidak boleh dihitung inline di komponen
+- Agregasi laporan/dashboard di `lib/reports/` — bonus selalu di-exclude (`is_bonus=false`)
 - Soft-delete untuk Customer dan Product — kolom `deleted_at` timestamp
-- Bonus accumulator = computed dari query (tidak di-store), kecuali `bonuses_granted` yang di-store
-- PDF export pakai react-pdf
+- Bonus accumulator = computed dari query; `bonuses_consumed` di-store di `bonus_grants`
+- PDF export pakai `@react-pdf/renderer` (client-side download via PDFDownloadLink)
+- `redirect()` di server actions HARUS di luar blok `try/catch` (Next.js NEXT_REDIRECT)
 
 ## PATTERN WAJIB PROJECT INI
 - Gunakan `supabase.auth.getUser()` bukan `getSession()` untuk validasi server-side
@@ -94,22 +97,11 @@ Transaksi Piutang = belum diakui di laporan.
 
 ### Sumber UI
 Claude Design (claude.ai/design) sudah generate prototype UI lengkap.
-File tersedia di root project:
+File tersedia di `ui-reference/`:
 ```
-shell.jsx          ← layout sidebar + topbar
-app.jsx            ← router + state management
-shared.jsx         ← komponen shared (Button, Input, Card, Badge, dll)
-data.jsx           ← dummy data + helper functions (formatIDR, applyCascade, dll)
-icons.jsx          ← icon wrapper
-styles.css         ← CSS variables + base styles
-page-login.jsx     ← halaman login
-page-dashboard.jsx ← halaman dashboard
-page-bon.jsx       ← form bon baru
-page-bon-detail.jsx← detail bon
-page-customers.jsx ← daftar pelanggan + detail pelanggan
-page-products.jsx  ← daftar produk
-page-transactions.jsx ← daftar transaksi
-page-reports.jsx   ← laporan
+shell.jsx, shared.jsx, data.jsx, icons.jsx, styles.css
+page-login.jsx, page-dashboard.jsx, page-bon.jsx, page-bon-detail.jsx
+page-customers.jsx, page-products.jsx, page-transactions.jsx, page-reports.jsx
 ```
 
 ### ⚠️ PERINGATAN KRITIS — WAJIB DIBACA
@@ -179,37 +171,48 @@ bonus_grants
 
 ## CURRENT PHASE
 
-**Phase 3 — Product CRUD** (active next session)
+**Phase 8 — Deploy + Polish** (active next session)
 
 | Phase | Status |
 |-------|--------|
 | 0 Setup & Init | ✅ Done |
 | 1 Auth | ✅ Done |
 | 2 Customer CRUD | ✅ Done |
-| 3 Product CRUD | 🔄 Next |
-| 4–10 | ⬜ Queue |
+| 3 Product CRUD | ✅ Done |
+| 4 Transaksi (Bon) | ✅ Done |
+| 5 Settlement (Lunas) | ✅ Done |
+| 6 Bonus Logic | ✅ Done |
+| 7 Dashboard + Laporan + PDF | ✅ Done |
+| 8 Deploy + Polish | 🔄 Active |
+| 9–10 | ⬜ Queue |
 
 ## SCREEN STATUS
 
 | Screen | Route | Status |
 |--------|-------|--------|
-| Login | `/login` | ✅ Done — form, server action, error/loading |
-| Dashboard | `/dashboard` | 🔄 Placeholder |
-| Pelanggan (list) | `/customers` | ✅ Done — stats, filter, search, CRUD actions |
-| Tambah pelanggan | `/customers/new` | ✅ Done — cascading discount editor |
-| Edit pelanggan | `/customers/[id]/edit` | ✅ Done |
-| Detail pelanggan | `/customers/[id]` | ✅ Done — ringkas (settlement Phase 5) |
-| Produk | `/products` | ⬜ Belum — sidebar link 404 |
-| Transaksi | `/transactions` | ⬜ Belum — sidebar link 404 |
-| Laporan | `/reports` | ⬜ Belum — sidebar link 404 |
+| Login | `/login` | ✅ Done |
+| Dashboard | `/dashboard` | ✅ Done — piutang, omzet/laba bulan ini, recent tx |
+| Pelanggan (list) | `/customers` | ✅ Done |
+| Tambah / edit pelanggan | `/customers/new`, `[id]/edit` | ✅ Done |
+| Detail pelanggan | `/customers/[id]` | ✅ Done — settlement, bonus banner, PDF |
+| Produk | `/products` | ✅ Done |
+| Transaksi | `/transactions` | ✅ Done — list, bon form, detail, settlement |
+| Laporan | `/reports` | ✅ Done — 3 tabs, filter bulan/tahun, PDF export |
 
 ## SESSION NOTES (2026-06-06)
 
 - Supabase project: `https://vgwgfnsmcmlrbbumdoey.supabase.co`
-- Demo user seeded: `admin@hl-finance.com` / `HLFinance2026!`
-- **Bug fixed:** error `42501 permission denied` — role `authenticated` butuh GRANT tabel. Fix: `supabase/fix-grants.sql` + `schema.sql` §7
-- App shell: Sidebar + TopBar live di semua dashboard routes
-- UI reference files ada di `ui-reference/` (bukan root) — tetap VANILLA REACT, convert only
-- Stack aktual: Next.js **16.2.7** + Tailwind v4 + shadcn/ui (bukan Next 14 — update mental model)
-- Git remote: `https://github.com/Forge-WorkSpace/hl-finance.git`
-- Git branch: `feature/mobile-integration` — ✅ pushed ke GitHub
+- Demo user: `admin@hl-finance.com` / `HLFinance2026!`
+- Stack: Next.js **16.2.7** + Tailwind v4 + shadcn/ui + Supabase
+- Git: `https://github.com/Forge-WorkSpace/hl-finance` — branch `feature/mobile-integration`
+- GRANT fix: `supabase/fix-grants.sql` (role `authenticated` butuh GRANT tabel)
+- UI reference di `ui-reference/` — VANILLA REACT, convert only (jangan copy-paste)
+- Laporan & dashboard: exclude `is_bonus=true` dari semua agregasi omzet/laba/piutang
+- Klaim bonus: `/transactions/new?customerId=[id]&bonus=true` → insert `bonus_grants`
+- Settlement: `settlement-actions.ts` — single bon + monthly mass settle (exclude bonus bon)
+- PDF: `@react-pdf/renderer` — `ReportPDFDocument`, `CustomerPDFDocument`
+
+## DOCS SYNC
+
+- Progress detail: `CHECKPOINT.md`
+- Keputusan bisnis/teknis: `DECISIONS.md`
