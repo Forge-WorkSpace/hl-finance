@@ -171,20 +171,12 @@ bonus_grants
 
 ## CURRENT PHASE
 
-**Phase 8 — Deploy + Polish** (active next session)
+**Phase 8 — Deploy + Polish** ✅ **SELESAI**
 
 | Phase | Status |
 |-------|--------|
-| 0 Setup & Init | ✅ Done |
-| 1 Auth | ✅ Done |
-| 2 Customer CRUD | ✅ Done |
-| 3 Product CRUD | ✅ Done |
-| 4 Transaksi (Bon) | ✅ Done |
-| 5 Settlement (Lunas) | ✅ Done |
-| 6 Bonus Logic | ✅ Done |
-| 7 Dashboard + Laporan + PDF | ✅ Done |
-| 8 Deploy + Polish | 🔄 Active |
-| 9–10 | ⬜ Queue |
+| 0–8 | ✅ Done |
+| 9–10 | Optional / covered in Phase 8 |
 
 ## SCREEN STATUS
 
