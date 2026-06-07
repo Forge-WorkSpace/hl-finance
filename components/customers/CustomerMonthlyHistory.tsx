@@ -98,7 +98,7 @@ export function CustomerMonthlyHistory({
               ) : null}
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="table-scroll">
               <table className="min-w-[520px] w-full border-collapse">
                 <thead>
                   <tr className="bg-[var(--surface-dim)] text-left text-[11px] font-semibold uppercase tracking-wider text-[var(--text-secondary)]">

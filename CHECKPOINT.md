@@ -1,5 +1,5 @@
 # CHECKPOINT — HL Internal Finance App
-Last updated: 2026-06-07 (end of session)
+Last updated: 2026-06-07 (mobile responsive)
 
 ## STATUS PHASE
 
@@ -15,10 +15,11 @@ Last updated: 2026-06-07 (end of session)
 | Phase 7 — Dashboard + Laporan + PDF | ✅ Done | Dashboard real data, recap 3 tabs, react-pdf export |
 | Phase 8 — Deploy + Polish | ✅ Done | Redirect, sonner, README, main pushed |
 | Vercel Production | ✅ Done | https://hl-finance.vercel.app |
-| Phase 9 — Optional polish | ⬜ Queue | TopBar search |
+| Mobile Responsive | ✅ Done | Bottom nav, 2×2 cards, collapsible diskon, table scroll |
+| Phase 9 — Optional polish | ⬜ Queue | TopBar search, mobile logout |
 
 ## PHASE AKTIF SEKARANG
-**Post-deploy QA** — verifikasi login & flow utama di live URL
+**Post-deploy QA** — verifikasi mobile di DevTools (375px / 390px) + live URL
 
 ## LIVE URL
 - **Production:** https://hl-finance.vercel.app ✅
@@ -29,11 +30,20 @@ Last updated: 2026-06-07 (end of session)
 | Screen | Route | Status |
 |--------|-------|--------|
 | Login | `/login` | ✅ Done |
-| Dashboard | `/dashboard` | ✅ Done |
-| Customer list / new / edit / detail | `/customers/*` | ✅ Done |
+| Dashboard | `/dashboard` | ✅ Done (mobile 2×2 cards) |
+| Customer list / new / edit / detail | `/customers/*` | ✅ Done (diskon collapsible mobile) |
 | Product list / new / edit | `/products/*` | ✅ Done |
-| Transaksi list / bon / detail | `/transactions/*` | ✅ Done |
+| Transaksi list / bon / detail | `/transactions/*` | ✅ Done (ringkasan bawah mobile) |
 | Laporan | `/reports` | ✅ Done |
+
+## MOBILE RESPONSIVE (2026-06-07)
+- Sidebar → bottom nav (5 icon) di `< lg`
+- TopBar → search/help/avatar hidden mobile; bell + Transaksi Baru
+- Dashboard & recap cards → grid 2×2 mobile
+- Tables → `.table-scroll` horizontal scroll
+- Bon form/detail → ringkasan panel di bawah (non-sticky mobile)
+- Customer detail → diskon collapsible mobile
+- `page-inner` padding 16px mobile, bottom nav clearance `pb-20`
 
 ## SUPABASE
 - URL: `https://vgwgfnsmcmlrbbumdoey.supabase.co`
@@ -42,28 +52,30 @@ Last updated: 2026-06-07 (end of session)
 
 ## GIT / REMOTE
 - Repo: `https://github.com/Forge-WorkSpace/hl-finance`
-- Branch dev: `feature/mobile-integration` (pushed)
+- Branch dev: `feature/mobile-integration`
 - Branch prod: `main` @ `56b8e95` (pushed, merged from feature)
 
 ## TODO NEXT
 1. Post-deploy QA di https://hl-finance.vercel.app (login, CRUD, bon, lunas, PDF, mobile)
 2. Supabase Auth: tambahkan `https://hl-finance.vercel.app/**` di Redirect URLs jika login gagal
 3. (Optional) Wire TopBar global search
-4. Merge `feature/mobile-integration` docs commit ke `main` jika perlu
+4. (Optional) Logout accessible on mobile (sidebar hidden)
+5. Push mobile responsive commit & merge ke `main` untuk redeploy Vercel
 
 ## KNOWN ISSUES
-- TopBar search global masih placeholder UI only
+- TopBar search global masih placeholder UI only (desktop)
+- Logout hanya di sidebar desktop — belum ada di mobile
 - Pastikan Supabase Redirect URLs include production domain jika auth error di live
 
 ## COMMIT HISTORY (terakhir)
 
 ```
+fix(responsive): mobile responsive for all pages
+3531791 docs: add Vercel live URL https://hl-finance.vercel.app
 40d61be docs: mark Phase 8 complete in CLAUDE.md
 0285d33 chore: polish UX, redirect after action, README, deploy prep
 3ff988b feat(reports): dashboard real data, recap laporan, PDF export
-3f74852 feat(bonus): bonus claim flow, bonus grants, bonus validation
-afeea76 feat(settlement): lunas modal, settle single bon, settle monthly, customer detail
 ```
 
 ## LAST COMMIT
-- `40d61be` — `docs: mark Phase 8 complete in CLAUDE.md`
+- `fix(responsive): mobile responsive for all pages` — bottom nav, mobile layout fixes

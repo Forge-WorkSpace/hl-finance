@@ -80,7 +80,7 @@ export function DashboardView({ stats, recentTransactions }: DashboardViewProps)
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-5">
         {cards.map((card) => (
           <SummaryCard key={card.label} {...card} />
         ))}
@@ -101,7 +101,7 @@ export function DashboardView({ stats, recentTransactions }: DashboardViewProps)
         </div>
 
         <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
-          <div className="overflow-x-auto">
+          <div className="table-scroll">
             <table className="min-w-[720px] w-full border-collapse">
               <thead>
                 <tr className="bg-[var(--surface-dim)] text-left text-[11px] font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
@@ -201,13 +201,13 @@ function SummaryCard({
     trendTone === "piutang" ? "text-[var(--piutang)]" : "text-[var(--lunas)]";
 
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-white p-[22px] shadow-[var(--shadow-card)]">
+    <div className="rounded-xl border border-[var(--border)] bg-white p-4 shadow-[var(--shadow-card)] lg:p-[22px]">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="text-[11px] font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
             {label}
           </div>
-          <div className={`mono mt-3 text-2xl font-bold ${valueClass}`}>
+          <div className={`mono mt-2 text-xl font-bold lg:mt-3 lg:text-2xl ${valueClass}`}>
             {formatIDR(value)}
           </div>
           <div className={`mt-1.5 text-xs ${trendClass}`}>{trend}</div>

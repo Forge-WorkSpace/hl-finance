@@ -214,7 +214,7 @@ export function TransactionTable({
       </div>
 
       <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
-        <div className="overflow-x-auto">
+        <div className="table-scroll">
           <table className="min-w-[900px] w-full border-collapse">
             <thead>
               <tr className="bg-[var(--surface-dim)] text-left text-[11px] font-semibold uppercase tracking-wider text-[var(--text-secondary)]">

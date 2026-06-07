@@ -174,7 +174,7 @@ export function RecapTable({ data, periodLabel }: RecapTableProps) {
 
       {tab === "overall" ? (
         <div className="space-y-5">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             <BigStat label="Total Omzet" value={data.overallSummary.totalOmzet} />
             <BigStat
               label="Total Laba HL"
@@ -249,7 +249,7 @@ function ReportTableShell({
 }) {
   return (
     <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
-      <div className="overflow-x-auto">
+      <div className="table-scroll">
         <table className="min-w-[760px] w-full border-collapse">{children}</table>
       </div>
     </div>
