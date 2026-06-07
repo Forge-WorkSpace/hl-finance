@@ -160,7 +160,7 @@ export function CustomerDetailView({ customer }: CustomerDetailViewProps) {
             </div>
           </div>
           <Link
-            href="/transactions/new"
+            href={`/transactions/new?customerId=${customer.id}&bonus=true`}
             className="text-sm font-semibold text-amber-700 hover:underline"
           >
             Klaim Sekarang →

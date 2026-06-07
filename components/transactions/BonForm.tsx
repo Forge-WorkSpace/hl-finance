@@ -31,6 +31,9 @@ interface BonFormProps {
   customers: BonFormCustomer[];
   products: BonFormProduct[];
   defaultNomorBon?: string;
+  initialCustomerId?: string;
+  bonusMode?: boolean;
+  bonusesAvailable?: number;
   initialData?: TransactionDetail;
   transactionId?: string;
   action: (
@@ -53,16 +56,26 @@ export function BonForm({
   customers,
   products,
   defaultNomorBon,
+  initialCustomerId,
+  bonusMode = false,
+  bonusesAvailable = 0,
   initialData,
   action,
 }: BonFormProps) {
   const [state, formAction, isPending] = useActionState(action, { error: null });
   const nomorBon = initialData?.nomor_bon ?? defaultNomorBon ?? "";
   const [tanggal, setTanggal] = useState(initialData?.tanggal ?? todayIsoDate());
-  const [customerId, setCustomerId] = useState(initialData?.customer_id ?? "");
+  const [customerId, setCustomerId] = useState(
+    initialData?.customer_id ?? initialCustomerId ?? "",
+  );
   const [deskripsi, setDeskripsi] = useState(initialData?.deskripsi ?? "");
-  const [isBonus, setIsBonus] = useState(initialData?.is_bonus ?? false);
-  const [ongkir, setOngkir] = useState(initialData?.ongkir ?? 0);
+  const [isBonus, setIsBonus] = useState(initialData?.is_bonus ?? bonusMode);
+  const [bonusesToClaim, setBonusesToClaim] = useState(
+    bonusMode && bonusesAvailable > 0 ? 1 : 0,
+  );
+  const [ongkir, setOngkir] = useState(
+    bonusMode ? 0 : (initialData?.ongkir ?? 0),
+  );
   const [rows, setRows] = useState<LineRow[]>(() => {
     if (initialData?.lines.length) {
       return initialData.lines.map((line) => ({
@@ -116,7 +129,13 @@ export function BonForm({
   }, [computedRows, ongkir]);
 
   const hasValidLines = computedRows.some((row) => row.productId);
-  const canSubmit = Boolean(customerId) && hasValidLines;
+  const bonusClaimValid =
+    !isBonus || (bonusesToClaim >= 1 && bonusesToClaim <= bonusesAvailable);
+  const canSubmit =
+    Boolean(customerId) &&
+    hasValidLines &&
+    bonusClaimValid &&
+    (!bonusMode || bonusesAvailable > 0);
 
   const payloadJson = useMemo(
     () =>
@@ -126,7 +145,8 @@ export function BonForm({
         customer_id: customerId,
         deskripsi: deskripsi.trim() || null,
         is_bonus: isBonus,
-        ongkir,
+        ongkir: isBonus ? 0 : ongkir,
+        bonuses_to_claim: isBonus ? bonusesToClaim : undefined,
         lines: computedRows
           .filter((row) => row.productId)
           .map((row) => ({
@@ -141,6 +161,7 @@ export function BonForm({
       deskripsi,
       isBonus,
       ongkir,
+      bonusesToClaim,
       computedRows,
     ],
   );
@@ -173,6 +194,31 @@ export function BonForm({
 
       <div className="flex flex-col items-start gap-6 lg:flex-row">
         <div className="min-w-0 flex-1 space-y-5">
+          {bonusMode ? (
+            <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3.5">
+              <Gift size={18} className="mt-0.5 shrink-0 text-amber-600" />
+              <div>
+                <p className="text-sm font-semibold text-amber-800">
+                  Bon Bonus — produk yang ditambahkan gratis, tidak masuk omzet
+                </p>
+                <p className="mt-0.5 text-xs text-amber-700">
+                  Transaksi Bonus: {bonusesAvailable} bonus tersedia untuk pelanggan
+                  ini
+                </p>
+              </div>
+            </div>
+          ) : null}
+
+          {bonusMode && bonusesAvailable === 0 ? (
+            <div
+              role="alert"
+              className="flex items-start gap-2 rounded-lg border border-[var(--danger-border)] bg-[var(--danger-bg)] px-4 py-3 text-sm text-[var(--danger)]"
+            >
+              <AlertCircle size={16} className="mt-0.5 shrink-0" />
+              Pelanggan belum memiliki bonus yang bisa diklaim.
+            </div>
+          ) : null}
+
           <section className="rounded-xl border border-[var(--border)] bg-white p-6">
             <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
               <h1 className="text-2xl font-bold text-[var(--text-primary)]">
@@ -217,7 +263,7 @@ export function BonForm({
                   customers={customers}
                   value={customerId}
                   onChange={setCustomerId}
-                  disabled={isPending}
+                  disabled={isPending || bonusMode}
                 />
               </div>
             </div>
@@ -265,7 +311,7 @@ export function BonForm({
                 type="button"
                 role="switch"
                 aria-checked={isBonus}
-                disabled={isPending}
+                disabled={isPending || bonusMode}
                 onClick={() => setIsBonus((value) => !value)}
                 className={`relative h-6 w-10 shrink-0 rounded-full transition-colors ${
                   isBonus ? "bg-[var(--bonus)]" : "bg-[var(--border-strong)]"
@@ -278,6 +324,35 @@ export function BonForm({
                 />
               </button>
             </div>
+
+            {isBonus ? (
+              <div className="mt-4">
+                <label
+                  htmlFor="bonuses_to_claim"
+                  className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-[var(--text-secondary)]"
+                >
+                  Jumlah Bonus Diklaim
+                </label>
+                <input
+                  id="bonuses_to_claim"
+                  type="number"
+                  min={1}
+                  max={Math.max(1, bonusesAvailable)}
+                  value={bonusesToClaim || ""}
+                  onChange={(e) =>
+                    setBonusesToClaim(
+                      Math.max(1, Math.min(bonusesAvailable, Number(e.target.value) || 1)),
+                    )
+                  }
+                  disabled={isPending || bonusesAvailable === 0}
+                  required
+                  className="mono h-11 w-full max-w-[160px] rounded-md border border-[var(--border)] px-3 text-sm outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 disabled:opacity-60"
+                />
+                <p className="mt-1.5 text-xs text-[var(--text-secondary)]">
+                  Maksimal {bonusesAvailable} bonus tersedia
+                </p>
+              </div>
+            ) : null}
           </section>
 
           <section className="overflow-hidden rounded-xl border border-[var(--border)] bg-white">
@@ -370,10 +445,18 @@ export function BonForm({
                         )}
                       </td>
                       <td className="mono px-3 py-2.5 text-right text-sm">
-                        {row.calc ? formatIDR(row.calc.discountedUnitPrice) : "—"}
+                        {row.calc
+                          ? isBonus
+                            ? "GRATIS"
+                            : formatIDR(row.calc.discountedUnitPrice)
+                          : "—"}
                       </td>
                       <td className="mono px-3 py-2.5 text-right text-sm font-semibold">
-                        {row.calc ? formatIDR(row.calc.lineOmzet) : "—"}
+                        {row.calc
+                          ? isBonus
+                            ? "GRATIS"
+                            : formatIDR(row.calc.lineOmzet)
+                          : "—"}
                       </td>
                       <td className="px-3 py-2.5 text-center">
                         <button
@@ -400,29 +483,44 @@ export function BonForm({
               Ringkasan Transaksi
             </h2>
 
-            <SummaryLine label="Omzet LM" value={summary.omzetLm} />
-            <SummaryLine label="Omzet BR" value={summary.omzetBr} />
+            <SummaryLine
+              label="Omzet LM"
+              value={summary.omzetLm}
+              isBonus={isBonus}
+            />
+            <SummaryLine
+              label="Omzet BR"
+              value={summary.omzetBr}
+              isBonus={isBonus}
+            />
             <hr className="my-2.5 border-[var(--border)]" />
-            <SummaryLine label="Total Omzet" value={summary.totalOmzet} strong />
+            <SummaryLine
+              label="Total Omzet"
+              value={summary.totalOmzet}
+              strong
+              isBonus={isBonus}
+            />
 
-            <div className="mt-3 flex items-center justify-between gap-3">
-              <span className="text-sm text-[var(--text-secondary)]">Ongkir</span>
-              <div className="relative w-32">
-                <span className="mono pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-[var(--text-tertiary)]">
-                  Rp
-                </span>
-                <input
-                  type="number"
-                  min={0}
-                  value={ongkir}
-                  onChange={(e) =>
-                    setOngkir(Math.max(0, Number(e.target.value) || 0))
-                  }
-                  disabled={isPending}
-                  className="mono h-9 w-full rounded-md border border-[var(--border)] pr-2 pl-8 text-right text-sm outline-none focus:border-blue-600 disabled:opacity-60"
-                />
+            {!isBonus ? (
+              <div className="mt-3 flex items-center justify-between gap-3">
+                <span className="text-sm text-[var(--text-secondary)]">Ongkir</span>
+                <div className="relative w-32">
+                  <span className="mono pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-[var(--text-tertiary)]">
+                    Rp
+                  </span>
+                  <input
+                    type="number"
+                    min={0}
+                    value={ongkir}
+                    onChange={(e) =>
+                      setOngkir(Math.max(0, Number(e.target.value) || 0))
+                    }
+                    disabled={isPending}
+                    className="mono h-9 w-full rounded-md border border-[var(--border)] pr-2 pl-8 text-right text-sm outline-none focus:border-blue-600 disabled:opacity-60"
+                  />
+                </div>
               </div>
-            </div>
+            ) : null}
 
             <hr className="my-2.5 border-[var(--border)]" />
             <div className="flex items-end justify-between gap-3">
@@ -430,7 +528,7 @@ export function BonForm({
                 Total Tagihan
               </span>
               <span className="mono text-xl font-bold text-[var(--primary)]">
-                {formatIDR(summary.totalTagihan)}
+                {isBonus ? "GRATIS" : formatIDR(summary.totalTagihan)}
               </span>
             </div>
 
@@ -458,6 +556,8 @@ export function BonForm({
                   </>
                 ) : initialData ? (
                   "Simpan Perubahan"
+                ) : isBonus ? (
+                  "Simpan Bon Bonus"
                 ) : (
                   "Simpan sebagai Piutang"
                 )}
@@ -480,10 +580,12 @@ function SummaryLine({
   label,
   value,
   strong,
+  isBonus,
 }: {
   label: string;
   value: number;
   strong?: boolean;
+  isBonus?: boolean;
 }) {
   return (
     <div className="flex items-center justify-between gap-3 py-1.5">
@@ -493,7 +595,7 @@ function SummaryLine({
         {label}
       </span>
       <span className={`mono text-sm ${strong ? "font-semibold" : ""}`}>
-        {formatIDR(value)}
+        {isBonus ? "GRATIS" : formatIDR(value)}
       </span>
     </div>
   );

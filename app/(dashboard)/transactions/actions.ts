@@ -5,6 +5,9 @@ import { redirect } from "next/navigation";
 import {
   calculateLineItem,
   calculateTransactionSummary,
+  calcBonusesAvailable,
+  getBonusAccumulator,
+  getBonusGranted,
 } from "@/lib/calculations";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -65,15 +68,25 @@ function parsePayload(formData: FormData): {
     return { error: "Tambahkan minimal satu produk pada line items." };
   }
 
+  const isBonus = Boolean(data.is_bonus);
+  const bonusesToClaim = Number(data.bonuses_to_claim ?? 0);
+
+  if (isBonus) {
+    if (!Number.isInteger(bonusesToClaim) || bonusesToClaim < 1) {
+      return { error: "Jumlah bonus diklaim minimal 1." };
+    }
+  }
+
   return {
     payload: {
       nomor_bon: nomorBon,
       tanggal,
       customer_id: customerId,
       deskripsi: data.deskripsi ? String(data.deskripsi).trim() : null,
-      is_bonus: Boolean(data.is_bonus),
-      ongkir,
+      is_bonus: isBonus,
+      ongkir: isBonus ? 0 : ongkir,
       lines: validLines,
+      bonuses_to_claim: isBonus ? bonusesToClaim : undefined,
     },
   };
 }
@@ -137,11 +150,55 @@ async function buildLineRecords(
   return { inserts, summary };
 }
 
+async function validateBonusClaim(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  customerId: string,
+  bonusesToClaim: number,
+  excludeTransactionId?: string,
+): Promise<string | null> {
+  const { data: customer, error } = await supabase
+    .from("customers")
+    .select("bonus_threshold")
+    .eq("id", customerId)
+    .maybeSingle();
+
+  if (error || !customer) {
+    return "Pelanggan tidak ditemukan.";
+  }
+
+  const threshold = Number(customer.bonus_threshold);
+  const [accumulator, granted] = await Promise.all([
+    getBonusAccumulator(supabase, customerId),
+    getBonusGranted(supabase, customerId),
+  ]);
+
+  let adjustedGranted = granted;
+  if (excludeTransactionId) {
+    const { data: existingGrant } = await supabase
+      .from("bonus_grants")
+      .select("bonuses_consumed")
+      .eq("transaction_id", excludeTransactionId)
+      .maybeSingle();
+    if (existingGrant) {
+      adjustedGranted -= Number(existingGrant.bonuses_consumed);
+    }
+  }
+
+  const available = calcBonusesAvailable(accumulator, threshold, adjustedGranted);
+
+  if (bonusesToClaim > available) {
+    return "Bonus tidak cukup untuk diklaim.";
+  }
+
+  return null;
+}
+
 async function upsertBonusGrant(
   supabase: Awaited<ReturnType<typeof createClient>>,
   transactionId: string,
   customerId: string,
   isBonus: boolean,
+  bonusesConsumed: number,
 ) {
   await supabase.from("bonus_grants").delete().eq("transaction_id", transactionId);
 
@@ -150,7 +207,7 @@ async function upsertBonusGrant(
   const { error } = await supabase.from("bonus_grants").insert({
     customer_id: customerId,
     transaction_id: transactionId,
-    bonuses_consumed: 1,
+    bonuses_consumed: bonusesConsumed,
   });
 
   if (error) {
@@ -171,6 +228,15 @@ export async function createTransaction(
 
   if (await isNomorBonTaken(supabase, parsed.payload.nomor_bon)) {
     return { error: "Nomor bon sudah digunakan. Gunakan nomor lain." };
+  }
+
+  if (parsed.payload.is_bonus) {
+    const bonusError = await validateBonusClaim(
+      supabase,
+      parsed.payload.customer_id,
+      parsed.payload.bonuses_to_claim ?? 0,
+    );
+    if (bonusError) return { error: bonusError };
   }
 
   let newTxId: string;
@@ -219,6 +285,7 @@ export async function createTransaction(
         tx.id,
         parsed.payload.customer_id,
         true,
+        parsed.payload.bonuses_to_claim ?? 1,
       );
     }
 
@@ -230,6 +297,8 @@ export async function createTransaction(
   }
 
   revalidatePath("/transactions");
+  revalidatePath("/customers");
+  revalidatePath(`/customers/${parsed.payload.customer_id}`);
   redirect(`/transactions/${newTxId}`);
 }
 
@@ -249,6 +318,16 @@ export async function updateTransaction(
     await isNomorBonTaken(supabase, parsed.payload.nomor_bon, transactionId)
   ) {
     return { error: "Nomor bon sudah digunakan. Gunakan nomor lain." };
+  }
+
+  if (parsed.payload.is_bonus) {
+    const bonusError = await validateBonusClaim(
+      supabase,
+      parsed.payload.customer_id,
+      parsed.payload.bonuses_to_claim ?? 1,
+      transactionId,
+    );
+    if (bonusError) return { error: bonusError };
   }
 
   try {
@@ -300,6 +379,7 @@ export async function updateTransaction(
       transactionId,
       parsed.payload.customer_id,
       parsed.payload.is_bonus,
+      parsed.payload.bonuses_to_claim ?? 1,
     );
   } catch (err) {
     return {
@@ -308,6 +388,8 @@ export async function updateTransaction(
   }
 
   revalidatePath("/transactions");
+  revalidatePath("/customers");
+  revalidatePath(`/customers/${parsed.payload.customer_id}`);
   revalidatePath(`/transactions/${transactionId}`);
   redirect(`/transactions/${transactionId}`);
 }

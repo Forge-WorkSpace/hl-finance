@@ -1,4 +1,54 @@
 import type { ProductType } from "@/types";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+export function calcBonusesAvailable(
+  accumulator: number,
+  threshold: number,
+  granted: number,
+): number {
+  if (threshold <= 0) return 0;
+  return Math.max(0, Math.floor(accumulator / threshold) - granted);
+}
+
+export async function getBonusAccumulator(
+  supabase: SupabaseClient,
+  customerId: string,
+): Promise<number> {
+  const { data, error } = await supabase
+    .from("transactions")
+    .select("transaction_lines(line_omzet)")
+    .eq("customer_id", customerId)
+    .eq("status", "lunas")
+    .eq("is_bonus", false);
+
+  if (error) throw error;
+
+  let total = 0;
+  for (const tx of data ?? []) {
+    const lines = tx.transaction_lines as { line_omzet: number }[] | null;
+    for (const line of lines ?? []) {
+      total += Number(line.line_omzet);
+    }
+  }
+  return total;
+}
+
+export async function getBonusGranted(
+  supabase: SupabaseClient,
+  customerId: string,
+): Promise<number> {
+  const { data, error } = await supabase
+    .from("bonus_grants")
+    .select("bonuses_consumed")
+    .eq("customer_id", customerId);
+
+  if (error) throw error;
+
+  return (data ?? []).reduce(
+    (sum, row) => sum + Number(row.bonuses_consumed),
+    0,
+  );
+}
 
 export function formatIDR(amount: number): string {
   const n = Math.round(amount || 0);

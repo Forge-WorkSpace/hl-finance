@@ -1,5 +1,6 @@
 import type { CustomerMonthGroup, CustomerTransactionRow } from "./types";
 import type { ProductType } from "@/types";
+import { calcBonusesAvailable } from "@/lib/calculations";
 
 type RawLine = {
   line_omzet: number;
@@ -136,8 +137,7 @@ export function calculateBonusAvailable(
   threshold: number,
   bonusesGranted: number,
 ): number {
-  if (threshold <= 0) return 0;
-  return Math.max(0, Math.floor(accumulator / threshold) - bonusesGranted);
+  return calcBonusesAvailable(accumulator, threshold, bonusesGranted);
 }
 
 export function summarizeCustomerTransactions(rawTransactions: RawTransaction[]) {

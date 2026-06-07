@@ -70,4 +70,12 @@ export interface TransactionPayload {
   is_bonus: boolean;
   ongkir: number;
   lines: BonFormLineInput[];
+  bonuses_to_claim?: number;
+}
+
+export interface CustomerBonusContext {
+  bonusesAvailable: number;
+  bonusThreshold: number;
+  bonusAccumulator: number;
+  bonusesGranted: number;
 }

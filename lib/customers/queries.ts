@@ -42,7 +42,8 @@ async function fetchPiutangByCustomer(
   const { data, error } = await supabase
     .from("transactions")
     .select("customer_id, ongkir, transaction_lines(line_omzet)")
-    .eq("status", "piutang");
+    .eq("status", "piutang")
+    .eq("is_bonus", false);
 
   if (error) throw error;
 

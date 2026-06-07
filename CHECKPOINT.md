@@ -1,5 +1,5 @@
 # CHECKPOINT — HL Internal Finance App
-Last updated: 2026-06-06 (Phase 5 complete)
+Last updated: 2026-06-06 (Phase 6 complete)
 
 ## STATUS PHASE
 
@@ -11,15 +11,15 @@ Last updated: 2026-06-06 (Phase 5 complete)
 | Phase 3 — Product CRUD | ✅ Done | List, create/edit, soft delete, LM/BR filter |
 | Phase 4 — Transaksi (Bon) + Kalkulasi | ✅ Done | Bon form, real-time calc, snapshot, detail |
 | Phase 5 — Settlement (Lunas/Piutang) | ✅ Done | LunasModal, settle single/monthly, customer detail |
-| Phase 6 — Bonus Logic | 🔄 Active | Mulai sesi berikutnya |
+| Phase 6 — Bonus Logic | ✅ Done | Klaim bonus flow, bonus_grants, validation |
 | Phase 7 — Customer Detail Page | ✅ Done | Full detail di Phase 5 |
-| Phase 8 — Recap + PDF Export | ⬜ Queue | |
+| Phase 8 — Recap + PDF Export | 🔄 Active | Mulai sesi berikutnya |
 | Phase 9 — Polish UI + Bug Fix | ⬜ Queue | |
 | Phase 10 — Final Deploy + README | ⬜ Queue | |
 
 ## PHASE AKTIF SEKARANG
-Phase: **6 — Bonus Logic**
-Task aktif: Klaim bonus, bonus bon, update bonus_grants
+Phase: **8 — Recap + PDF Export**
+Task aktif: Laporan omzet/laba, export PDF customer & recap
 
 ## SCREENS DONE
 
@@ -29,12 +29,12 @@ Task aktif: Klaim bonus, bonus bon, update bonus_grants
 | Dashboard shell | `/dashboard` | 🔄 Placeholder |
 | Customer list | `/customers` | ✅ Done |
 | Customer new/edit | `/customers/new`, `[id]/edit` | ✅ Done |
-| Customer detail | `/customers/[id]` | ✅ Done (full: summary, monthly history, settlement) |
+| Customer detail | `/customers/[id]` | ✅ Done (full: summary, monthly history, settlement, bonus banner) |
 | App shell (Sidebar/TopBar) | dashboard layout | ✅ Done |
 | Produk list | `/products` | ✅ Done |
 | Produk new/edit | `/products/new`, `[id]/edit` | ✅ Done |
-| Transaksi list | `/transactions` | ✅ Done (customer link) |
-| Bon baru / edit | `/transactions/new`, `[id]/edit` | ✅ Done |
+| Transaksi list | `/transactions` | ✅ Done (customer link, bonus badge) |
+| Bon baru / edit | `/transactions/new`, `[id]/edit` | ✅ Done (bonus claim mode) |
 | Detail bon | `/transactions/[id]` | ✅ Done (Tandai Lunas) |
 | Laporan | `/reports` | ⬜ Phase 8 |
 
@@ -48,11 +48,10 @@ Task aktif: Klaim bonus, bonus bon, update bonus_grants
 - Repo: `https://github.com/Forge-WorkSpace/hl-finance`
 - Branch: `feature/mobile-integration`
 
-## TODO NEXT (Phase 6)
-1. Klaim bonus flow dari customer detail banner
-2. Buat bonus bon (is_bonus=true) saat klaim
-3. Record bonus_grants + update bonuses_consumed
-4. Validasi threshold dari customer settings
+## TODO NEXT (Phase 8)
+1. Halaman laporan omzet/laba per periode
+2. PDF export customer detail
+3. Recap bulanan / tahunan
 
 ## KNOWN ISSUES
 - Sidebar link `/reports` → 404 (expected, belum Phase 8)
@@ -63,12 +62,11 @@ Task aktif: Klaim bonus, bonus bon, update bonus_grants
 ## COMMIT HISTORY (terakhir)
 
 ```
-feat(settlement): lunas modal, settle single bon, settle monthly, customer detail
+feat(bonus): bonus claim flow, bonus grants, bonus validation
+afeea76 feat(settlement): lunas modal, settle single bon, settle monthly, customer detail
 56b29fb fix(transactions): auto nomor bon, form action, redirect outside try/catch
 826a18e feat(transactions): bon form, real-time calculation, snapshot, detail page
-636e4a4 feat(products): product CRUD, soft delete, LM/BR type filter
-433ed42 feat(customers): customer CRUD, cascading discount editor, app shell
 ```
 
 ## LAST COMMIT
-- `feat(settlement): lunas modal, settle single bon, settle monthly, customer detail` — Phase 5 complete
+- `feat(bonus): bonus claim flow, bonus grants, bonus validation` — Phase 6 complete

@@ -1,7 +1,13 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import {
+  calcBonusesAvailable,
+  getBonusAccumulator,
+  getBonusGranted,
+} from "@/lib/calculations";
 import type {
   BonFormCustomer,
   BonFormProduct,
+  CustomerBonusContext,
   TransactionDetail,
   TransactionDetailLine,
   TransactionListItem,
@@ -255,4 +261,32 @@ export async function generateNextNomorBon(
   }
 
   return `${prefix}${String(maxSeq + 1).padStart(4, "0")}`;
+}
+
+export async function getCustomerBonusContext(
+  supabase: SupabaseClient,
+  customerId: string,
+): Promise<CustomerBonusContext | null> {
+  const { data: customer, error } = await supabase
+    .from("customers")
+    .select("bonus_threshold")
+    .eq("id", customerId)
+    .is("deleted_at", null)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!customer) return null;
+
+  const threshold = Number(customer.bonus_threshold);
+  const [accumulator, granted] = await Promise.all([
+    getBonusAccumulator(supabase, customerId),
+    getBonusGranted(supabase, customerId),
+  ]);
+
+  return {
+    bonusThreshold: threshold,
+    bonusAccumulator: accumulator,
+    bonusesGranted: granted,
+    bonusesAvailable: calcBonusesAvailable(accumulator, threshold, granted),
+  };
 }
