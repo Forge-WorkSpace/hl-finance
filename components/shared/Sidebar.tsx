@@ -2,24 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  BarChart3,
-  FileText,
-  LayoutDashboard,
-  LogOut,
-  Package,
-  Settings,
-  Users,
-} from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const NAV_ITEMS = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/customers", label: "Pelanggan", icon: Users },
-  { href: "/products", label: "Produk", icon: Package },
-  { href: "/transactions", label: "Transaksi", icon: FileText },
-  { href: "/reports", label: "Laporan", icon: BarChart3 },
-] as const;
+import { isNavActive, MAIN_NAV_ITEMS } from "@/lib/nav-items";
 
 function NavLink({
   href,
@@ -51,13 +36,8 @@ function NavLink({
 export function Sidebar() {
   const pathname = usePathname();
 
-  function isActive(href: string): boolean {
-    if (href === "/dashboard") return pathname === "/dashboard";
-    return pathname.startsWith(href);
-  }
-
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-screen w-60 flex-col bg-[#0F172A]">
+    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-60 flex-col bg-[#0F172A] lg:flex">
       <div className="flex items-center gap-[11px] px-6 pb-5 pt-[22px]">
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-[15px] font-bold tracking-wide text-white">
           HL
@@ -69,13 +49,13 @@ export function Sidebar() {
       </div>
 
       <nav className="mt-2 flex flex-col gap-0.5">
-        {NAV_ITEMS.map((item) => (
+        {MAIN_NAV_ITEMS.map((item) => (
           <NavLink
             key={item.href}
             href={item.href}
             label={item.label}
             icon={item.icon}
-            active={isActive(item.href)}
+            active={isNavActive(pathname, item.href)}
           />
         ))}
       </nav>

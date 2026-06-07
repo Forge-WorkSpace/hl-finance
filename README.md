@@ -13,7 +13,7 @@ Aplikasi manajemen penjualan dan piutang internal untuk bisnis HL. Single-user w
 
 ## Demo
 
-🔗 **Live URL:** _(set after Vercel deploy — update this line)_
+🔗 **Live URL:** https://hl-finance.vercel.app
 
 ## Demo Credentials
 

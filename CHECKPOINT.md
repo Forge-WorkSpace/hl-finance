@@ -1,5 +1,5 @@
 # CHECKPOINT — HL Internal Finance App
-Last updated: 2026-06-06 (Phase 8 complete)
+Last updated: 2026-06-07 (mobile responsive)
 
 ## STATUS PHASE
 
@@ -13,51 +13,69 @@ Last updated: 2026-06-06 (Phase 8 complete)
 | Phase 5 — Settlement (Lunas/Piutang) | ✅ Done | LunasModal, settle single/monthly, customer detail |
 | Phase 6 — Bonus Logic | ✅ Done | Klaim bonus flow, bonus_grants, validation |
 | Phase 7 — Dashboard + Laporan + PDF | ✅ Done | Dashboard real data, recap 3 tabs, react-pdf export |
-| Phase 8 — Deploy + Polish | ✅ Done | Redirect after action, sonner toasts, README |
-| Phase 9 — Polish UI + Bug Fix | ⬜ Optional | TopBar search masih placeholder |
-| Phase 10 — Final Deploy + README | ✅ Done | Merged ke main, siap Vercel deploy |
+| Phase 8 — Deploy + Polish | ✅ Done | Redirect, sonner, README, main pushed |
+| Vercel Production | ✅ Done | https://hl-finance.vercel.app |
+| Mobile Responsive | ✅ Done | Bottom nav, 2×2 cards, collapsible diskon, table scroll |
+| Phase 9 — Optional polish | ⬜ Queue | TopBar search, mobile logout |
 
 ## PHASE AKTIF SEKARANG
-**Project selesai** — siap deploy Vercel & submission bounty
+**Post-deploy QA** — verifikasi mobile di DevTools (375px / 390px) + live URL
 
 ## LIVE URL
-- Vercel: _(deploy via Vercel dashboard — set env vars Supabase)_
+- **Production:** https://hl-finance.vercel.app ✅
 - Repo: https://github.com/Forge-WorkSpace/hl-finance
 
 ## SCREENS DONE
 
-Semua screen ✅ — lihat CLAUDE.md
+| Screen | Route | Status |
+|--------|-------|--------|
+| Login | `/login` | ✅ Done |
+| Dashboard | `/dashboard` | ✅ Done (mobile 2×2 cards) |
+| Customer list / new / edit / detail | `/customers/*` | ✅ Done (diskon collapsible mobile) |
+| Product list / new / edit | `/products/*` | ✅ Done |
+| Transaksi list / bon / detail | `/transactions/*` | ✅ Done (ringkasan bawah mobile) |
+| Laporan | `/reports` | ✅ Done |
+
+## MOBILE RESPONSIVE (2026-06-07)
+- Sidebar → bottom nav (5 icon) di `< lg`
+- TopBar → search/help/avatar hidden mobile; bell + Transaksi Baru
+- Dashboard & recap cards → grid 2×2 mobile
+- Tables → `.table-scroll` horizontal scroll
+- Bon form/detail → ringkasan panel di bawah (non-sticky mobile)
+- Customer detail → diskon collapsible mobile
+- `page-inner` padding 16px mobile, bottom nav clearance `pb-20`
 
 ## SUPABASE
 - URL: `https://vgwgfnsmcmlrbbumdoey.supabase.co`
 - Demo user: `admin@hl-finance.com` / `HLFinance2026!`
-- Schema + RLS: `schema.sql` (termasuk GRANT §7)
-- Fix GRANT: `supabase/fix-grants.sql` ✅
+- Schema + RLS: `schema.sql` | Fix GRANT: `supabase/fix-grants.sql` ✅
 
 ## GIT / REMOTE
 - Repo: `https://github.com/Forge-WorkSpace/hl-finance`
-- Branch utama: `main` (production)
 - Branch dev: `feature/mobile-integration`
+- Branch prod: `main` @ `56b8e95` (pushed, merged from feature)
 
-## PHASE 8 DELIVERABLES
-- ✅ Redirect after action (semua server actions)
-- ✅ Toast notifications (sonner + `?toast=` query param)
-- ✅ README profesional dengan setup & deploy guide
-- ✅ Empty states + loading states (existing forms)
+## TODO NEXT
+1. Post-deploy QA di https://hl-finance.vercel.app (login, CRUD, bon, lunas, PDF, mobile)
+2. Supabase Auth: tambahkan `https://hl-finance.vercel.app/**` di Redirect URLs jika login gagal
+3. (Optional) Wire TopBar global search
+4. (Optional) Logout accessible on mobile (sidebar hidden)
+5. Push mobile responsive commit & merge ke `main` untuk redeploy Vercel
 
 ## KNOWN ISSUES
-- TopBar search global belum wired (placeholder UI only)
-- Live URL: deploy manual di Vercel (butuh env vars)
+- TopBar search global masih placeholder UI only (desktop)
+- Logout hanya di sidebar desktop — belum ada di mobile
+- Pastikan Supabase Redirect URLs include production domain jika auth error di live
 
 ## COMMIT HISTORY (terakhir)
 
 ```
-chore: polish UX, redirect after action, README, deploy prep
+fix(responsive): mobile responsive for all pages
+3531791 docs: add Vercel live URL https://hl-finance.vercel.app
+40d61be docs: mark Phase 8 complete in CLAUDE.md
+0285d33 chore: polish UX, redirect after action, README, deploy prep
 3ff988b feat(reports): dashboard real data, recap laporan, PDF export
-3f74852 feat(bonus): bonus claim flow, bonus grants, bonus validation
-afeea76 feat(settlement): lunas modal, settle single bon, settle monthly, customer detail
-0b44437 docs: sync CHECKPOINT and CLAUDE.md through Phase 7
 ```
 
 ## LAST COMMIT
-- `chore: polish UX, redirect after action, README, deploy prep` — Phase 8 complete
+- `fix(responsive): mobile responsive for all pages` — bottom nav, mobile layout fixes

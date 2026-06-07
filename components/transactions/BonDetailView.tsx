@@ -88,7 +88,7 @@ export function BonDetailView({ transaction }: BonDetailViewProps) {
                 Line Items
               </h2>
             </div>
-            <div className="overflow-x-auto">
+            <div className="table-scroll">
               <table className="min-w-[760px] w-full border-collapse">
                 <thead>
                   <tr className="bg-[var(--surface-dim)] text-left text-[10.5px] font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
@@ -147,7 +147,7 @@ export function BonDetailView({ transaction }: BonDetailViewProps) {
           ) : null}
         </div>
 
-        <aside className="w-full shrink-0 lg:w-80">
+        <aside className="order-last w-full shrink-0 lg:order-none lg:w-80">
           <div className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-card)]">
             <h2 className="mb-4 text-[15px] font-semibold text-[var(--text-primary)]">
               Ringkasan

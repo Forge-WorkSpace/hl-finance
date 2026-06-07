@@ -3,6 +3,7 @@ import { ChevronRight, Gift, Pencil, Plus } from "lucide-react";
 import { effectivePct, formatIDR } from "@/lib/calculations";
 import { CustomerAvatar } from "@/components/shared/CustomerAvatar";
 import { DiscountChips } from "@/components/customers/DiscountChips";
+import { DiscountPanelCollapsible } from "@/components/customers/DiscountPanelCollapsible";
 import { CustomerMonthlyHistory } from "@/components/customers/CustomerMonthlyHistory";
 import { CustomerDownloadButton } from "@/components/customers/CustomerDownloadButton";
 import { buildCustomerPdfData } from "@/lib/reports/customer-pdf";
@@ -121,7 +122,7 @@ export function CustomerDetailView({ customer }: CustomerDetailViewProps) {
         </div>
       </div>
 
-      <div className="mb-5 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="mb-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
         <SummaryCard
           label="Piutang"
           value={formatIDR(customer.piutang)}
@@ -181,23 +182,25 @@ export function CustomerDetailView({ customer }: CustomerDetailViewProps) {
           />
         </div>
 
-        <div className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-card)]">
-          <h2 className="text-[15px] font-semibold text-[var(--text-primary)]">
-            Diskon Bertingkat
-          </h2>
-          <p className="mb-4 mt-1 text-[12.5px] text-[var(--text-secondary)]">
-            Diterapkan berurutan dari harga base.
-          </p>
-          <TierBlock tipe="LM" label="Produk LM" steps={customer.discounts.LM} />
-          <div className="my-4 h-px bg-[var(--border)]" />
-          <TierBlock tipe="BR" label="Produk BR" steps={customer.discounts.BR} />
-          <div className="mt-5 rounded-lg border border-[var(--border)] bg-[var(--surface-dim)] px-3 py-2.5">
-            <div className="text-xs text-[var(--text-secondary)]">Threshold Bonus</div>
-            <div className="mono mt-1 text-sm font-semibold text-[var(--text-primary)]">
-              {formatIDR(customer.bonus_threshold)}
+        <DiscountPanelCollapsible>
+          <div className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-card)]">
+            <h2 className="text-[15px] font-semibold text-[var(--text-primary)]">
+              Diskon Bertingkat
+            </h2>
+            <p className="mb-4 mt-1 text-[12.5px] text-[var(--text-secondary)]">
+              Diterapkan berurutan dari harga base.
+            </p>
+            <TierBlock tipe="LM" label="Produk LM" steps={customer.discounts.LM} />
+            <div className="my-4 h-px bg-[var(--border)]" />
+            <TierBlock tipe="BR" label="Produk BR" steps={customer.discounts.BR} />
+            <div className="mt-5 rounded-lg border border-[var(--border)] bg-[var(--surface-dim)] px-3 py-2.5">
+              <div className="text-xs text-[var(--text-secondary)]">Threshold Bonus</div>
+              <div className="mono mt-1 text-sm font-semibold text-[var(--text-primary)]">
+                {formatIDR(customer.bonus_threshold)}
+              </div>
             </div>
           </div>
-        </div>
+        </DiscountPanelCollapsible>
       </div>
     </div>
   );
@@ -213,12 +216,12 @@ function SummaryCard({
   tone?: "piutang" | "lunas";
 }) {
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-white p-[18px] shadow-[var(--shadow-card)]">
-      <div className="text-[11px] font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
+    <div className="rounded-xl border border-[var(--border)] bg-white p-4 shadow-[var(--shadow-card)] lg:p-[18px]">
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-secondary)] lg:text-[11px]">
         {label}
       </div>
       <div
-        className={`mono mt-2 text-2xl font-bold ${
+        className={`mono mt-1.5 text-lg font-bold lg:mt-2 lg:text-2xl ${
           tone === "piutang"
             ? "text-[var(--piutang)]"
             : tone === "lunas"
