@@ -5,6 +5,11 @@ import type {
   CustomerListItem,
   CustomerTransactionRow,
 } from "./types";
+import {
+  buildCustomerMonthGroups,
+  calculateBonusAvailable,
+  summarizeCustomerTransactions,
+} from "./detail-utils";
 
 type DiscountRow = {
   product_type: "LM" | "BR";
@@ -111,21 +116,32 @@ export async function getCustomerById(
   if (error) throw error;
   if (!customer) return null;
 
-  const [piutangMap, bonusMap, txResult] = await Promise.all([
+  const [piutangMap, bonusMap, txResult, grantsResult] = await Promise.all([
     fetchPiutangByCustomer(supabase),
     fetchBonusCountByCustomer(supabase),
     supabase
       .from("transactions")
-      .select("id, nomor_bon, tanggal, status, is_bonus, ongkir, transaction_lines(line_omzet)")
+      .select(
+        "id, nomor_bon, tanggal, status, is_bonus, ongkir, transaction_lines(line_omzet, line_laba, products(tipe))",
+      )
       .eq("customer_id", id)
       .order("tanggal", { ascending: false }),
+    supabase
+      .from("bonus_grants")
+      .select("bonuses_consumed")
+      .eq("customer_id", id),
   ]);
 
   if (txResult.error) throw txResult.error;
+  if (grantsResult.error) throw grantsResult.error;
 
-  const transactions: CustomerTransactionRow[] = (txResult.data ?? []).map((tx) => {
+  const rawTransactions = txResult.data ?? [];
+  const transactions: CustomerTransactionRow[] = rawTransactions.map((tx) => {
     const lines = tx.transaction_lines as { line_omzet: number }[] | null;
-    const lineTotal = (lines ?? []).reduce((sum, line) => sum + Number(line.line_omzet), 0);
+    const lineTotal = (lines ?? []).reduce(
+      (sum, line) => sum + Number(line.line_omzet),
+      0,
+    );
     return {
       id: tx.id,
       nomor_bon: tx.nomor_bon,
@@ -135,6 +151,25 @@ export async function getCustomerById(
       total: lineTotal + Number(tx.ongkir),
     };
   });
+
+  const bonusesGranted = (grantsResult.data ?? []).reduce(
+    (sum, row) => sum + Number(row.bonuses_consumed),
+    0,
+  );
+
+  const summary = summarizeCustomerTransactions(
+    rawTransactions as Parameters<typeof summarizeCustomerTransactions>[0],
+  );
+
+  const monthGroups = buildCustomerMonthGroups(
+    rawTransactions as Parameters<typeof buildCustomerMonthGroups>[0],
+  );
+
+  const bonusesAvailable = calculateBonusAvailable(
+    summary.bonusAccumulator,
+    Number(customer.bonus_threshold),
+    bonusesGranted,
+  );
 
   return {
     id: customer.id,
@@ -148,6 +183,13 @@ export async function getCustomerById(
     transactionCount: transactions.length,
     lunasCount: transactions.filter((t) => t.status === "lunas").length,
     transactions,
+    sudahBayar: summary.sudahBayar,
+    totalOmzetLunas: summary.totalOmzetLunas,
+    totalLabaLunas: summary.totalLabaLunas,
+    bonusAccumulator: summary.bonusAccumulator,
+    bonusesGranted,
+    bonusesAvailable,
+    monthGroups,
   };
 }
 

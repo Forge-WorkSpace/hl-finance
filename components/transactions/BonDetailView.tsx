@@ -11,6 +11,7 @@ import type { TransactionDetail } from "@/lib/transactions/types";
 import { ProductTypeBadge } from "@/components/products/ProductTypeBadge";
 import { StatusBadge } from "@/components/transactions/StatusBadge";
 import { BonusBadge } from "@/components/transactions/BonusBadge";
+import { BonSettlementPanel } from "@/components/transactions/BonSettlementPanel";
 
 interface BonDetailViewProps {
   transaction: TransactionDetail;
@@ -167,21 +168,13 @@ export function BonDetailView({ transaction }: BonDetailViewProps) {
             </div>
           </div>
 
-          <div className="mt-4 rounded-xl border border-[var(--border)] bg-white p-5">
-            <h2 className="mb-3 text-[15px] font-semibold text-[var(--text-primary)]">
-              Status Pembayaran
-            </h2>
-            {transaction.status === "piutang" ? (
-              <p className="text-sm text-[var(--piutang)]">
-                Status: Piutang — tombol &quot;Tandai Lunas&quot; akan tersedia di
-                Phase 5.
-              </p>
-            ) : (
-              <p className="text-sm text-[var(--lunas)]">
-                Lunas pada {formatDateId(transaction.tanggal_lunas)}
-              </p>
-            )}
-          </div>
+          <BonSettlementPanel
+            transactionId={transaction.id}
+            customerName={transaction.customer_nama}
+            totalTagihan={summary.totalTagihan}
+            status={transaction.status}
+            tanggalLunas={transaction.tanggal_lunas}
+          />
         </aside>
       </div>
     </div>

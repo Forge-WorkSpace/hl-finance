@@ -278,12 +278,15 @@ export function TransactionTable({
                       </div>
                     </td>
                     <td className="px-[18px] py-3.5">
-                      <div className="flex items-center gap-3">
+                      <Link
+                        href={`/customers/${tx.customer_id}`}
+                        className="flex items-center gap-3 hover:opacity-80"
+                      >
                         <CustomerAvatar name={tx.customer_nama} />
-                        <span className="text-sm font-medium text-[var(--text-primary)]">
+                        <span className="text-sm font-medium text-[var(--text-primary)] hover:text-[var(--primary)]">
                           {tx.customer_nama}
                         </span>
-                      </div>
+                      </Link>
                     </td>
                     <td className="mono px-[18px] py-3.5 text-right text-sm font-medium text-[var(--text-primary)]">
                       {formatIDR(tx.total)}

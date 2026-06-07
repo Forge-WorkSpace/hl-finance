@@ -12,6 +12,28 @@ export type CustomerDetail = CustomerListItem & {
   transactionCount: number;
   lunasCount: number;
   transactions: CustomerTransactionRow[];
+  sudahBayar: number;
+  totalOmzetLunas: number;
+  totalLabaLunas: number;
+  bonusAccumulator: number;
+  bonusesGranted: number;
+  bonusesAvailable: number;
+  monthGroups: CustomerMonthGroup[];
+};
+
+export type CustomerMonthGroup = {
+  month: number;
+  year: number;
+  label: string;
+  transactions: CustomerTransactionRow[];
+  piutangTotal: number;
+  sudahBayarTotal: number;
+  omzetLmLunas: number;
+  omzetBrLunas: number;
+  totalOmzetLunas: number;
+  totalLabaLunas: number;
+  hasSettleablePiutang: boolean;
+  allLunas: boolean;
 };
 
 export type CustomerTransactionRow = {
