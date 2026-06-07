@@ -27,7 +27,7 @@ function IconButton({
 
 export function TopBar() {
   return (
-    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-3 border-b border-[var(--border)] bg-white px-4 md:gap-4 md:px-6">
+    <header className="sticky top-0 z-30 flex h-16 min-w-0 shrink-0 items-center gap-3 overflow-x-hidden border-b border-[var(--border)] bg-white px-4 md:gap-4 md:px-6">
       <div className="relative hidden max-w-[420px] flex-1 md:block">
         <Search
           size={16}

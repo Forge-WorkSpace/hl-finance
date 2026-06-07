@@ -21,7 +21,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen overflow-x-hidden bg-[var(--bg)]">
       <Sidebar />
-      <div className="flex min-h-screen min-w-0 flex-1 flex-col lg:ml-60">
+      <div className="flex min-h-screen min-w-0 max-w-full flex-1 flex-col lg:ml-60">
         <TopBar />
         <main className="page-scroll flex-1 pb-20 lg:pb-0">
           <div className="page-inner">{children}</div>

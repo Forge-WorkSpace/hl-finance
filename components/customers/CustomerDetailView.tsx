@@ -73,7 +73,7 @@ export function CustomerDetailView({ customer }: CustomerDetailViewProps) {
   });
 
   return (
-    <div className="animate-[fadeUp_280ms_ease]">
+    <div className="page-content animate-[fadeUp_280ms_ease]">
       <div className="mb-4 flex items-center gap-1.5 text-[13px] text-[var(--text-secondary)]">
         <Link href="/customers" className="hover:text-[var(--text-primary)]">
           Pelanggan
@@ -82,7 +82,7 @@ export function CustomerDetailView({ customer }: CustomerDetailViewProps) {
         <span className="font-medium text-[var(--text-primary)]">{customer.nama}</span>
       </div>
 
-      <div className="mb-5 rounded-xl border border-[var(--border)] bg-white p-6 shadow-[var(--shadow-card)]">
+      <div className="mb-5 rounded-xl border border-[var(--border)] bg-white p-4 shadow-[var(--shadow-card)] lg:p-6">
         <div className="flex flex-wrap items-start justify-between gap-5">
           <div className="flex min-w-0 gap-4">
             <CustomerAvatar name={customer.nama} size={60} />
@@ -165,7 +165,7 @@ export function CustomerDetailView({ customer }: CustomerDetailViewProps) {
         </div>
       ) : null}
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_340px]">
+      <div className="grid min-w-0 grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-[15px] font-semibold text-[var(--text-primary)]">

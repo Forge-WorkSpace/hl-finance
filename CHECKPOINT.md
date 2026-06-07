@@ -1,5 +1,5 @@
 # CHECKPOINT — HL Internal Finance App
-Last updated: 2026-06-07 (mobile responsive)
+Last updated: 2026-06-07 (mobile overflow fix)
 
 ## STATUS PHASE
 
@@ -16,6 +16,7 @@ Last updated: 2026-06-07 (mobile responsive)
 | Phase 8 — Deploy + Polish | ✅ Done | Redirect, sonner, README, main pushed |
 | Vercel Production | ✅ Done | https://hl-finance.vercel.app |
 | Mobile Responsive | ✅ Done | Bottom nav, 2×2 cards, collapsible diskon, table scroll |
+| Mobile Overflow Fix | ✅ Done | html/body overflow-x hidden, min-w-0 flex chain, bon ringkasan |
 | Phase 9 — Optional polish | ⬜ Queue | TopBar search, mobile logout |
 
 ## PHASE AKTIF SEKARANG
@@ -40,10 +41,11 @@ Last updated: 2026-06-07 (mobile responsive)
 - Sidebar → bottom nav (5 icon) di `< lg`
 - TopBar → search/help/avatar hidden mobile; bell + Transaksi Baru
 - Dashboard & recap cards → grid 2×2 mobile
-- Tables → `.table-scroll` horizontal scroll
+- Tables → `.table-scroll` horizontal scroll (in-container only)
 - Bon form/detail → ringkasan panel di bawah (non-sticky mobile)
 - Customer detail → diskon collapsible mobile
 - `page-inner` padding 16px mobile, bottom nav clearance `pb-20`
+- **Overflow fix:** `html, body { overflow-x: hidden; max-width: 100vw }`, `.page-content` + `min-w-0` on flex children (bon ringkasan, tabs, forms)
 
 ## SUPABASE
 - URL: `https://vgwgfnsmcmlrbbumdoey.supabase.co`

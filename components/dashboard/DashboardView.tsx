@@ -64,9 +64,9 @@ export function DashboardView({ stats, recentTransactions }: DashboardViewProps)
   ];
 
   return (
-    <div className="animate-[fadeUp_280ms_ease]">
+    <div className="page-content animate-[fadeUp_280ms_ease]">
       <div className="mb-7 flex flex-wrap items-start justify-between gap-4">
-        <div>
+        <div className="min-w-0">
           <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
             Dashboard
           </h1>
@@ -74,8 +74,8 @@ export function DashboardView({ stats, recentTransactions }: DashboardViewProps)
             Ringkasan performa keuangan bisnis Anda
           </p>
         </div>
-        <div className="flex items-center gap-2 pt-1 text-sm text-[var(--text-secondary)]">
-          <Calendar size={15} />
+        <div className="hidden min-w-0 items-center gap-2 pt-1 text-sm text-[var(--text-secondary)] sm:flex">
+          <Calendar size={15} className="shrink-0" />
           <span className="capitalize">{today}</span>
         </div>
       </div>
@@ -100,7 +100,7 @@ export function DashboardView({ stats, recentTransactions }: DashboardViewProps)
           </Link>
         </div>
 
-        <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
+        <div className="min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
           <div className="table-scroll">
             <table className="min-w-[720px] w-full border-collapse">
               <thead>

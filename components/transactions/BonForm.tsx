@@ -183,7 +183,7 @@ export function BonForm({
   }
 
   return (
-    <div className="animate-[fadeUp_280ms_ease]">
+    <div className="page-content animate-[fadeUp_280ms_ease]">
       <div className="mb-4 flex items-center gap-2 text-sm text-[var(--text-secondary)]">
         <Link href="/transactions" className="hover:text-[var(--text-primary)]">
           Transaksi
@@ -192,8 +192,8 @@ export function BonForm({
         <span className="font-medium text-[var(--text-primary)]">{title}</span>
       </div>
 
-      <div className="flex flex-col items-start gap-6 lg:flex-row">
-        <div className="min-w-0 flex-1 space-y-5">
+      <div className="flex w-full min-w-0 max-w-full flex-col gap-6 lg:flex-row lg:items-start">
+        <div className="min-w-0 w-full max-w-full flex-1 space-y-5">
           {bonusMode ? (
             <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3.5">
               <Gift size={18} className="mt-0.5 shrink-0 text-amber-600" />
@@ -219,7 +219,7 @@ export function BonForm({
             </div>
           ) : null}
 
-          <section className="rounded-xl border border-[var(--border)] bg-white p-6">
+          <section className="min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--border)] bg-white p-4 lg:p-6">
             <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
               <h1 className="text-2xl font-bold text-[var(--text-primary)]">
                 {title}
@@ -287,18 +287,18 @@ export function BonForm({
             </div>
 
             <div
-              className={`mt-4 flex items-center justify-between gap-4 rounded-lg border p-3.5 ${
+              className={`mt-4 flex flex-col gap-3 rounded-lg border p-3.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4 ${
                 isBonus
                   ? "border-[var(--bonus-border)] bg-[var(--bonus-bg)]"
                   : "border-[var(--border)] bg-[var(--surface-dim)]"
               }`}
             >
-              <div className="flex gap-3">
+              <div className="flex min-w-0 gap-3">
                 <Gift
                   size={18}
                   className={isBonus ? "text-[var(--bonus)]" : "text-[var(--text-tertiary)]"}
                 />
-                <div>
+                <div className="min-w-0">
                   <div className="text-sm font-medium text-[var(--text-primary)]">
                     Tandai sebagai Transaksi Bonus
                   </div>
@@ -355,8 +355,8 @@ export function BonForm({
             ) : null}
           </section>
 
-          <section className="overflow-hidden rounded-xl border border-[var(--border)] bg-white">
-            <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
+          <section className="min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--border)] bg-white">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border)] px-4 py-4 lg:px-5">
               <h2 className="text-[15px] font-semibold text-[var(--text-primary)]">
                 Line Items
               </h2>
@@ -477,8 +477,8 @@ export function BonForm({
           </section>
         </div>
 
-        <aside className="order-last w-full shrink-0 lg:order-none lg:sticky lg:top-24 lg:w-80">
-          <div className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-card)]">
+        <aside className="order-last w-full min-w-0 max-w-full lg:order-none lg:w-80 lg:max-w-none lg:shrink-0 lg:sticky lg:top-24">
+          <div className="min-w-0 max-w-full rounded-xl border border-[var(--border)] bg-white p-4 shadow-[var(--shadow-card)] lg:p-5">
             <h2 className="mb-4 text-[15px] font-semibold text-[var(--text-primary)]">
               Ringkasan Transaksi
             </h2>
@@ -523,11 +523,11 @@ export function BonForm({
             ) : null}
 
             <hr className="my-2.5 border-[var(--border)]" />
-            <div className="flex items-end justify-between gap-3">
-              <span className="text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]">
+            <div className="flex min-w-0 items-end justify-between gap-3">
+              <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]">
                 Total Tagihan
               </span>
-              <span className="mono text-xl font-bold text-[var(--primary)]">
+              <span className="mono min-w-0 break-all text-right text-lg font-bold text-[var(--primary)] lg:text-xl">
                 {isBonus ? "GRATIS" : formatIDR(summary.totalTagihan)}
               </span>
             </div>

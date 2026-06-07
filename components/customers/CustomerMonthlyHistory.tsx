@@ -77,7 +77,7 @@ export function CustomerMonthlyHistory({
         {monthGroups.map((group) => (
           <section
             key={`${group.year}-${group.month}`}
-            className="overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]"
+            className="min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]"
           >
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] px-5 py-4">
               <h3 className="text-[15px] font-semibold capitalize text-[var(--text-primary)]">

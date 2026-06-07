@@ -75,7 +75,7 @@ export function ProductTable({ products }: ProductTableProps) {
   }
 
   return (
-    <div className="animate-[fadeUp_280ms_ease]">
+    <div className="page-content animate-[fadeUp_280ms_ease]">
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
@@ -136,7 +136,7 @@ export function ProductTable({ products }: ProductTableProps) {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
+      <div className="min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
         <div className="table-scroll">
           <table className="min-w-[640px] w-full border-collapse">
             <thead>
@@ -243,7 +243,7 @@ export function ProductTable({ products }: ProductTableProps) {
 
 export function ProductTableSkeleton() {
   return (
-    <div className="animate-[fadeUp_280ms_ease]">
+    <div className="page-content animate-[fadeUp_280ms_ease]">
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="skel h-8 w-32" />
@@ -255,7 +255,7 @@ export function ProductTableSkeleton() {
         <div className="skel h-10 w-64 rounded-lg" />
         <div className="skel h-10 w-[280px] rounded-md" />
       </div>
-      <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
+      <div className="min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
         <div className="table-scroll">
           <table className="min-w-[640px] w-full border-collapse">
             <thead>

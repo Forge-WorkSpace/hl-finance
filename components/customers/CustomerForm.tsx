@@ -60,7 +60,7 @@ function DiscountSection({
 
   return (
     <section className="rounded-xl border border-[var(--border)] bg-white p-5">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <h2 className="text-[15px] font-semibold text-[var(--text-primary)]">{label}</h2>
           <span className="rounded-full bg-[var(--primary-subtle)] px-2 py-0.5 text-[11px] font-medium text-[var(--primary)]">
@@ -122,7 +122,7 @@ function DiscountSection({
         Tambah Step
       </button>
 
-      <div className="mono mt-4 rounded-lg bg-[var(--surface-dim)] px-3 py-2.5 text-[13px] text-[var(--text-secondary)]">
+      <div className="mono mt-4 break-words rounded-lg bg-[var(--surface-dim)] px-3 py-2.5 text-[13px] text-[var(--text-secondary)]">
         Harga {formatIDR(PREVIEW_BASE)} → {formatIDR(previewPrice)} (efektif{" "}
         {previewPct.toFixed(1).replace(".", ",")}%)
       </div>
@@ -171,7 +171,7 @@ export function CustomerForm({
   }
 
   return (
-    <div className="mx-auto max-w-2xl animate-[fadeUp_280ms_ease]">
+    <div className="page-content mx-auto w-full min-w-0 max-w-2xl animate-[fadeUp_280ms_ease]">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[var(--text-primary)]">{title}</h1>
         <p className="mt-1 text-sm text-[var(--text-secondary)]">

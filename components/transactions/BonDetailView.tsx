@@ -25,7 +25,7 @@ export function BonDetailView({ transaction }: BonDetailViewProps) {
   const summary = calculateTransactionSummary(summaryLines, transaction.ongkir);
 
   return (
-    <div className="animate-[fadeUp_280ms_ease]">
+    <div className="page-content animate-[fadeUp_280ms_ease]">
       <div className="mb-4 flex items-center gap-2 text-sm text-[var(--text-secondary)]">
         <Link href="/transactions" className="hover:text-[var(--text-primary)]">
           Transaksi
@@ -36,7 +36,7 @@ export function BonDetailView({ transaction }: BonDetailViewProps) {
         </span>
       </div>
 
-      <section className="mb-5 rounded-xl border border-[var(--border)] bg-white p-6">
+      <section className="mb-5 rounded-xl border border-[var(--border)] bg-white p-4 lg:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-3">
@@ -80,9 +80,9 @@ export function BonDetailView({ transaction }: BonDetailViewProps) {
         </div>
       </section>
 
-      <div className="flex flex-col items-start gap-6 lg:flex-row">
-        <div className="min-w-0 flex-1">
-          <section className="overflow-hidden rounded-xl border border-[var(--border)] bg-white">
+      <div className="flex w-full min-w-0 max-w-full flex-col gap-6 lg:flex-row lg:items-start">
+        <div className="min-w-0 w-full max-w-full flex-1">
+          <section className="min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--border)] bg-white">
             <div className="border-b border-[var(--border)] px-5 py-4">
               <h2 className="text-[15px] font-semibold text-[var(--text-primary)]">
                 Line Items
@@ -147,8 +147,8 @@ export function BonDetailView({ transaction }: BonDetailViewProps) {
           ) : null}
         </div>
 
-        <aside className="order-last w-full shrink-0 lg:order-none lg:w-80">
-          <div className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-card)]">
+        <aside className="order-last w-full min-w-0 max-w-full lg:order-none lg:w-80 lg:max-w-none lg:shrink-0">
+          <div className="min-w-0 max-w-full rounded-xl border border-[var(--border)] bg-white p-4 shadow-[var(--shadow-card)] lg:p-5">
             <h2 className="mb-4 text-[15px] font-semibold text-[var(--text-primary)]">
               Ringkasan
             </h2>
@@ -158,11 +158,11 @@ export function BonDetailView({ transaction }: BonDetailViewProps) {
             <SummaryLine label="Total Omzet" value={summary.totalOmzet} strong />
             <SummaryLine label="Ongkir" value={transaction.ongkir} />
             <hr className="my-2.5 border-[var(--border)]" />
-            <div className="flex items-end justify-between gap-3">
-              <span className="text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]">
+            <div className="flex min-w-0 items-end justify-between gap-3">
+              <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-[var(--text-secondary)]">
                 Total Tagihan
               </span>
-              <span className="mono text-xl font-bold text-[var(--primary)]">
+              <span className="mono min-w-0 break-all text-right text-lg font-bold text-[var(--primary)] lg:text-xl">
                 {formatIDR(summary.totalTagihan)}
               </span>
             </div>

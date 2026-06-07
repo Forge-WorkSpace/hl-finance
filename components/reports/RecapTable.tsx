@@ -39,15 +39,15 @@ export function RecapTable({ data, periodLabel }: RecapTableProps) {
   ];
 
   return (
-    <div>
+    <div className="page-content">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex gap-1 rounded-lg border border-[var(--border)] bg-white p-1">
+        <div className="flex max-w-full flex-wrap gap-1 rounded-lg border border-[var(--border)] bg-white p-1">
           {tabs.map((item) => (
             <button
               key={item.key}
               type="button"
               onClick={() => setTab(item.key)}
-              className={`h-9 rounded-md px-4 text-sm font-medium transition-colors ${
+              className={`h-9 rounded-md px-3 text-xs font-medium transition-colors sm:px-4 sm:text-sm ${
                 tab === item.key
                   ? "bg-[var(--primary-subtle)] text-[var(--primary)]"
                   : "text-[var(--text-secondary)] hover:bg-[var(--surface-dim)]"
@@ -248,7 +248,7 @@ function ReportTableShell({
   children: ReactNode;
 }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
+    <div className="min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
       <div className="table-scroll">
         <table className="min-w-[760px] w-full border-collapse">{children}</table>
       </div>

@@ -43,7 +43,7 @@ export function ReportsFilterBar({ month, year }: ReportsFilterBarProps) {
         <select
           value={draftMonth}
           onChange={(e) => setDraftMonth(e.target.value)}
-          className="h-10 min-w-[160px] rounded-md border border-[var(--border)] bg-white px-3 text-sm outline-none focus:border-blue-600"
+          className="h-10 w-full min-w-0 max-w-full rounded-md border border-[var(--border)] bg-white px-3 text-sm outline-none focus:border-blue-600 sm:min-w-[160px] sm:max-w-none"
         >
           {MONTH_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -59,7 +59,7 @@ export function ReportsFilterBar({ month, year }: ReportsFilterBarProps) {
         <select
           value={draftYear}
           onChange={(e) => setDraftYear(e.target.value)}
-          className="h-10 min-w-[120px] rounded-md border border-[var(--border)] bg-white px-3 text-sm outline-none focus:border-blue-600"
+          className="h-10 w-full min-w-0 max-w-full rounded-md border border-[var(--border)] bg-white px-3 text-sm outline-none focus:border-blue-600 sm:min-w-[120px] sm:max-w-none"
         >
           {yearOptions.map((optionYear) => (
             <option key={optionYear} value={optionYear}>
@@ -93,7 +93,7 @@ export function ReportsPageClient({
   year,
 }: ReportsPageClientProps) {
   return (
-    <div className="animate-[fadeUp_280ms_ease]">
+    <div className="page-content animate-[fadeUp_280ms_ease]">
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">

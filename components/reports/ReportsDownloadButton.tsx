@@ -29,7 +29,7 @@ export function ReportsDownloadButton({
         />
       }
       fileName={filename}
-      className="inline-flex h-10 items-center gap-2 rounded-md border border-[var(--border)] bg-white px-4 text-sm font-medium text-[var(--text-secondary)] hover:bg-[var(--surface-dim)]"
+      className="inline-flex h-10 max-w-full shrink-0 items-center gap-2 rounded-md border border-[var(--border)] bg-white px-3 text-xs font-medium text-[var(--text-secondary)] hover:bg-[var(--surface-dim)] sm:px-4 sm:text-sm"
     >
       {({ loading }) => (
         <>

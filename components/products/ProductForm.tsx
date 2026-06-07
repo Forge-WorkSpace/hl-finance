@@ -48,7 +48,7 @@ export function ProductForm({
   const hargaModal = useIdrField(initialData?.harga_modal ?? 0);
 
   return (
-    <div className="mx-auto max-w-2xl animate-[fadeUp_280ms_ease]">
+    <div className="page-content mx-auto w-full min-w-0 max-w-2xl animate-[fadeUp_280ms_ease]">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[var(--text-primary)]">{title}</h1>
         <p className="mt-1 text-sm text-[var(--text-secondary)]">
