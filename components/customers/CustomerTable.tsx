@@ -216,7 +216,7 @@ export function CustomerTable({ customers }: CustomerTableProps) {
                       <p className="mt-1 text-[13.5px] text-[var(--text-secondary)]">
                         {query
                           ? `Tidak ada pelanggan yang cocok dengan "${query}".`
-                          : "Mulai dengan menambahkan pelanggan pertama."}
+                          : "Belum ada pelanggan. Tambah sekarang."}
                       </p>
                       {!query && customers.length === 0 ? (
                         <Link

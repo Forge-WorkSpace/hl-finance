@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirectWithToast } from "@/lib/redirect-with-toast";
 import { createClient } from "@/lib/supabase/server";
 import type { ProductType } from "@/types";
 
@@ -81,7 +81,7 @@ export async function createProduct(
   }
 
   revalidatePath("/products");
-  redirect("/products");
+  redirectWithToast("/products", "product-created");
 }
 
 export async function updateProduct(
@@ -111,7 +111,7 @@ export async function updateProduct(
   }
 
   revalidatePath("/products");
-  redirect("/products");
+  redirectWithToast("/products", "product-updated");
 }
 
 export async function deleteProduct(productId: string): Promise<void> {
@@ -127,4 +127,5 @@ export async function deleteProduct(productId: string): Promise<void> {
   }
 
   revalidatePath("/products");
+  redirectWithToast("/products", "product-deleted");
 }

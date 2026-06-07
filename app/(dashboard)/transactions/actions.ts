@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirectWithToast } from "@/lib/redirect-with-toast";
 import {
   calculateLineItem,
   calculateTransactionSummary,
@@ -239,8 +239,6 @@ export async function createTransaction(
     if (bonusError) return { error: bonusError };
   }
 
-  let newTxId: string;
-
   try {
     const { inserts } = await buildLineRecords(supabase, parsed.payload);
 
@@ -289,7 +287,6 @@ export async function createTransaction(
       );
     }
 
-    newTxId = tx.id;
   } catch (err) {
     return {
       error: err instanceof Error ? err.message : "Gagal menyimpan transaksi.",
@@ -299,7 +296,12 @@ export async function createTransaction(
   revalidatePath("/transactions");
   revalidatePath("/customers");
   revalidatePath(`/customers/${parsed.payload.customer_id}`);
-  redirect(`/transactions/${newTxId}`);
+
+  if (parsed.payload.is_bonus) {
+    redirectWithToast(`/customers/${parsed.payload.customer_id}`, "bonus-saved");
+  }
+
+  redirectWithToast("/transactions", "transaction-created");
 }
 
 export async function updateTransaction(
@@ -391,7 +393,7 @@ export async function updateTransaction(
   revalidatePath("/customers");
   revalidatePath(`/customers/${parsed.payload.customer_id}`);
   revalidatePath(`/transactions/${transactionId}`);
-  redirect(`/transactions/${transactionId}`);
+  redirectWithToast(`/transactions/${transactionId}`, "transaction-updated");
 }
 
 export async function deleteTransaction(transactionId: string): Promise<void> {
@@ -409,4 +411,5 @@ export async function deleteTransaction(transactionId: string): Promise<void> {
   }
 
   revalidatePath("/transactions");
+  redirectWithToast("/transactions", "transaction-deleted");
 }

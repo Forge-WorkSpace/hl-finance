@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { redirectWithToast } from "@/lib/redirect-with-toast";
 
 export type SettlementActionState = {
   error: string | null;
@@ -47,7 +48,7 @@ export async function settleSingleBon(
   revalidatePath("/customers");
   revalidatePath(`/customers/${data.customer_id}`);
 
-  return { error: null, success: true };
+  redirectWithToast(`/transactions/${transactionId}`, "bon-settled");
 }
 
 export async function settleMonthlyBons(
@@ -99,5 +100,5 @@ export async function settleMonthlyBons(
   revalidatePath("/customers");
   revalidatePath(`/customers/${customerId}`);
 
-  return { error: null, success: true };
+  redirectWithToast(`/customers/${customerId}`, "month-settled");
 }

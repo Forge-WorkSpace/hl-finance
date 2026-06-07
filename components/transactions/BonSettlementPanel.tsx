@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
 import { formatIDR } from "@/lib/calculations";
 import { formatDateId } from "@/lib/utils";
@@ -24,7 +23,6 @@ export function BonSettlementPanel({
   status,
   tanggalLunas,
 }: BonSettlementPanelProps) {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -35,10 +33,7 @@ export function BonSettlementPanel({
       const result = await settleSingleBon(transactionId, tanggal);
       if (result.error) {
         setError(result.error);
-        return;
       }
-      setOpen(false);
-      router.refresh();
     });
   }
 

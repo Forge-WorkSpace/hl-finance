@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { formatIDR } from "@/lib/calculations";
 import { formatDateId } from "@/lib/utils";
 import { LunasModal } from "@/components/shared/LunasModal";
@@ -28,7 +27,6 @@ export function CustomerMonthlyHistory({
   customerName,
   monthGroups,
 }: CustomerMonthlyHistoryProps) {
-  const router = useRouter();
   const [pending, setPending] = useState<PendingSettlement | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -62,9 +60,6 @@ export function CustomerMonthlyHistory({
         setError(result.error);
         return;
       }
-
-      setPending(null);
-      router.refresh();
     });
   }
 

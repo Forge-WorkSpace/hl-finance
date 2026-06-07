@@ -211,6 +211,8 @@ bonus_grants
 - Klaim bonus: `/transactions/new?customerId=[id]&bonus=true` → insert `bonus_grants`
 - Settlement: `settlement-actions.ts` — single bon + monthly mass settle (exclude bonus bon)
 - PDF: `@react-pdf/renderer` — `ReportPDFDocument`, `CustomerPDFDocument`
+- UX: **sonner** toasts via `?toast=` query param setelah redirect server actions
+- Redirect map: create tx → `/transactions`, bonus bon → `/customers/[id]`, settle → detail/customer
 
 ## DOCS SYNC
 

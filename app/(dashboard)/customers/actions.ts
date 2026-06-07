@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirectWithToast } from "@/lib/redirect-with-toast";
 import { createClient } from "@/lib/supabase/server";
 import type { ProductType } from "@/types";
 
@@ -127,7 +127,7 @@ export async function createCustomer(
   if (brError) return { error: brError };
 
   revalidatePath("/customers");
-  redirect("/customers");
+  redirectWithToast("/customers", "customer-created");
 }
 
 export async function updateCustomer(
@@ -172,7 +172,7 @@ export async function updateCustomer(
 
   revalidatePath("/customers");
   revalidatePath(`/customers/${customerId}`);
-  redirect(`/customers/${customerId}`);
+  redirectWithToast(`/customers/${customerId}`, "customer-updated");
 }
 
 export async function deleteCustomer(customerId: string): Promise<void> {
@@ -188,5 +188,5 @@ export async function deleteCustomer(customerId: string): Promise<void> {
   }
 
   revalidatePath("/customers");
-  redirect("/customers");
+  redirectWithToast("/customers", "customer-deleted");
 }

@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirectWithToast } from "@/lib/redirect-with-toast";
 import { createClient } from "@/lib/supabase/server";
 
 export type LoginState = {
@@ -41,5 +41,5 @@ export async function loginAction(
   }
 
   revalidatePath("/", "layout");
-  redirect("/dashboard");
+  redirectWithToast("/dashboard", "login-success");
 }

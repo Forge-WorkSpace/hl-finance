@@ -2,7 +2,6 @@
 
 import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   Package,
   Pencil,
@@ -36,7 +35,6 @@ function ProductIcon({ tipe }: { tipe: "LM" | "BR" }) {
 }
 
 export function ProductTable({ products }: ProductTableProps) {
-  const router = useRouter();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FilterKey>("all");
   const [deleteTarget, setDeleteTarget] = useState<ProductListItem | null>(null);
@@ -73,7 +71,6 @@ export function ProductTable({ products }: ProductTableProps) {
     startTransition(async () => {
       await deleteProduct(deleteTarget.id);
       setDeleteTarget(null);
-      router.refresh();
     });
   }
 
@@ -164,7 +161,7 @@ export function ProductTable({ products }: ProductTableProps) {
                       <p className="mt-1 text-[13.5px] text-[var(--text-secondary)]">
                         {query
                           ? `Tidak ada produk yang cocok dengan "${query}".`
-                          : "Mulai dengan menambahkan produk pertama."}
+                          : "Belum ada produk. Tambah sekarang."}
                       </p>
                       {!query && products.length === 0 ? (
                         <Link

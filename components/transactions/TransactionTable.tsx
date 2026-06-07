@@ -2,7 +2,6 @@
 
 import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   Eye,
   FileText,
@@ -31,7 +30,6 @@ export function TransactionTable({
   transactions,
   customers,
 }: TransactionTableProps) {
-  const router = useRouter();
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [customerFilter, setCustomerFilter] = useState("all");
@@ -115,7 +113,6 @@ export function TransactionTable({
     startTransition(async () => {
       await deleteTransaction(deleteTarget.id);
       setDeleteTarget(null);
-      router.refresh();
     });
   }
 
@@ -243,7 +240,7 @@ export function TransactionTable({
                       <p className="mt-1 text-[13.5px] text-[var(--text-secondary)]">
                         {query
                           ? `Tidak ada transaksi yang cocok dengan "${query}".`
-                          : "Mulai dengan membuat transaksi bon pertama."}
+                          : "Belum ada transaksi. Buat bon pertama."}
                       </p>
                       {!query && transactions.length === 0 ? (
                         <Link
