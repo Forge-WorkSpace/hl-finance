@@ -72,12 +72,10 @@ Last updated: 2026-06-07 (mobile overflow fix)
 ## COMMIT HISTORY (terakhir)
 
 ```
-fix(responsive): mobile responsive for all pages
+fix(mobile): remove horizontal overflow on mobile
+670737f fix(responsive): mobile responsive for all pages
 3531791 docs: add Vercel live URL https://hl-finance.vercel.app
-40d61be docs: mark Phase 8 complete in CLAUDE.md
-0285d33 chore: polish UX, redirect after action, README, deploy prep
-3ff988b feat(reports): dashboard real data, recap laporan, PDF export
 ```
 
 ## LAST COMMIT
-- `fix(responsive): mobile responsive for all pages` — bottom nav, mobile layout fixes
+- `fix(mobile): remove horizontal overflow on mobile` — overflow-x hidden, min-w-0 flex chain, bon panel fixes
